@@ -47,18 +47,24 @@ public class Database {
                     totalColumnsInDatabase++;
                 }
             }
+            resultSet.close();
+            insertQuery.append(")");
+            valuePlaceholders.append(")");
+            insertQuery.append(valuePlaceholders);
         } catch (Error e) {
             throw new RuntimeErrorException(e);
         }
     }
+
     private boolean isExcludedColumn(String columnName) {
         String[] excludedColumns = {
-            "internal_code","barcode","name","category_id","description","cost","price","current_stock","type","type2"};
+                "internal_code", "barcode", "name", "category_id", "description", "cost", "price", "current_stock",
+                "type", "type2" };
         for (String excludedColumn : excludedColumns) {
             if (columnName.equals(excludedColumn)) {
                 return true;
             }
-        }     
+        }
         return false;
     }
 }

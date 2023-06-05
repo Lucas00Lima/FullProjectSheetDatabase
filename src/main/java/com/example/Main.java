@@ -7,7 +7,7 @@ public class Main {
         // Sistema acessa o banco de dados e pegas as colunas setando cada coluna
         Database database = new Database();
         database.connectionDatabase();
-
-        
+        SheetAcess sheetAcess = new SheetAcess();
+        sheetAcess.acessSheet();
     }
 }
