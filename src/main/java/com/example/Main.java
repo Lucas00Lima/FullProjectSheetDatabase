@@ -12,5 +12,7 @@ public class Main {
         database.connectionDatabase();
         SheetAcess sheetAcess = new SheetAcess();
         sheetAcess.acessSheet();
+        methodon method = new methodon();
+        method.method1();
     }
 }
