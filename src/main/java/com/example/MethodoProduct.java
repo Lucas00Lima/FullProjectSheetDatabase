@@ -13,24 +13,23 @@ import org.apache.poi.sl.usermodel.Placeholder;
 
 import com.mysql.cj.jdbc.DatabaseMetaData;
 
-public class methodoProduct {
+public class MethodoProduct {
+	private Connection connection;
 	private String url;
 	private String username;
 	private String password;
 	private String table;
-	private String db;
 	private StringBuilder insertQuery = new StringBuilder();
 
-	public methodoProduct() throws SQLException {
+	public String methodoProduct() throws SQLException {
 		Database data = new Database();
-		data.connectionDatabase();
-		url = data.getUrl();
-		username = data.getUsername();
-		password = data.getPassword();
-		db = data.getDb();
-		table = data.getTable();
-		String defaultValue = "";
-		try (Connection connection = DriverManager.getConnection(url, username, password)) {
+		try (Connection connection = data.connectionDatabase()) {
+			url = data.getUrl();
+			username = data.getUsername();
+			password = data.getPassword();
+			table = data.getTable();
+			String defaultValue = "";
+			
 			// Tratamento das colunas
 			String[] excludedColumn = getColumnProduct();
 			insertQuery.append("INSERT INTO ").append(table).append(" (");
@@ -58,6 +57,8 @@ public class methodoProduct {
 				}
 			}
 			resultSet.close();
+			
+			//Tratamento dos placeHolder
 			insertQuery.append(")").append(" VALUES (");
 			for (int i = 0; i < totalColumnsInDatabase; i++) {
 				insertQuery.append("?");
@@ -66,18 +67,18 @@ public class methodoProduct {
 				}
 			}
 			insertQuery.append(")");
-			System.out.println(insertQuery.toString());
+			connection.close();
 		} catch (Error e) {
 			throw new RuntimeErrorException(e);
 		}
-}
-
+		return insertQuery.toString();
+	}
+	
 	private String[] getColumnProduct() {
 		String[] columnProduct = { "internal_code", "barcode", "name", "category_id", "description", "cost", "price",
 				"current_stock", "type", "type2" };
 		return columnProduct;
 	}
-
 	private boolean isExcludedProduct(String columnName) {
 		String[] excludedColumns = getColumnProduct();
 		for (String excludedColumn : excludedColumns) {
@@ -87,4 +88,6 @@ public class methodoProduct {
 		}
 		return false;
 	}
+
 }
+

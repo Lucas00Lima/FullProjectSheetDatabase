@@ -13,7 +13,8 @@ public class Main {
         SheetAcess sheetAcess = new SheetAcess();
         sheetAcess.acessSheet();
         
-        //Seleção de metodo
-        methodoProduct methodoInit = new methodoProduct();
+        MethodoProduct product = new MethodoProduct();
+        String resultado = product.methodoProduct();
+        System.out.println(resultado);
     }
 }
