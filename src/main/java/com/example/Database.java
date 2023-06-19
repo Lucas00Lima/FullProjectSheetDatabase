@@ -15,7 +15,7 @@ public class Database {
 		username = "root" ; //JOptionPane.showInputDialog("Nome do usuario do banco de dados");
 		password = "@soma+";//JOptionPane.showInputDialog("Insira a senha do banco de dados");
 		db = "db000";//JOptionPane.showInputDialog("Nome do banco a qual deseja acessar");
-		url = "jdbc:mysql://localhost:3306/db000"; //+ db;
+		url = "jdbc:mysql://localhost:3306/" + db;
 		table = "product";
 	}
 

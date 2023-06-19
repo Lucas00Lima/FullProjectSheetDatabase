@@ -9,9 +9,11 @@ import java.util.List;
 
 import javax.management.RuntimeErrorException;
 
+import org.apache.poi.sl.usermodel.Placeholder;
+
 import com.mysql.cj.jdbc.DatabaseMetaData;
 
-public class methodoDataBase {
+public class methodoProduct {
 	private String url;
 	private String username;
 	private String password;
@@ -28,19 +30,22 @@ public class methodoDataBase {
 		table = data.getTable();
 		String defaultValue = "";
 		try (Connection connection = DriverManager.getConnection(url, username, password)) {
+			// Tratamento das colunas
 			String[] excludedColumn = getColumnProduct();
 			StringBuilder insertQuery = new StringBuilder("INSERT INTO " + table);
 			insertQuery.append(" (");
 			for (int i = 0; i < excludedColumn.length; i++) {
 				insertQuery.append(excludedColumn[i]);
 				if (i < excludedColumn.length - 1) {
-					insertQuery.append(", ");
+					insertQuery.append(",");
 				}
 			}
 			insertQuery.append(") ");
-			String[] excludedValue = getExcludedClient();
+
+			// Tratamento dos placeholders
+			String[] excludedValue = getColumnProduct();
 			StringBuilder valuePlaceholders = new StringBuilder("VALUES");
-			valuePlaceholders.append(" (");
+			valuePlaceholders.append("(");
 			for (int i = 0; i < excludedValue.length; i++) {
 				valuePlaceholders.append(excludedValue[i]);
 				if (i < excludedColumn.length - 1) {
@@ -52,6 +57,8 @@ public class methodoDataBase {
 			DatabaseMetaData metaData = (DatabaseMetaData) connection.getMetaData();
 			ResultSet resultSet = metaData.getColumns(null, null, table, null);
 			int totalColumnsInDatabase = excludedColumn.length;
+
+			// Loop de inclusão das demais colunas dentro do banco
 			while (resultSet.next()) {
 				String columnName = resultSet.getString("COLUMN_NAME");
 				if (!isExcludedProduct(columnName)) {
@@ -69,22 +76,7 @@ public class methodoDataBase {
 			insertQuery.append(")");
 			valuePlaceholders.append(")");
 			insertQuery.append(valuePlaceholders);
-			System.out.println(valuePlaceholders);
-			System.out.println(insertQuery);
-		} catch (Error e) {
-			throw new RuntimeErrorException(e);
-		}
-	}
-
-	public void methodoClient() throws SQLException {
-		Database data = new Database();
-		String url = data.getUrl();
-		String username = data.getUsername();
-		String password = data.getPassword();
-		String db = data.getDb();
-		String table = data.getTable();
-		try (Connection connection = DriverManager.getConnection(url, username, password)) {
-
+			System.out.println(insertQuery.toString());
 		} catch (Error e) {
 			throw new RuntimeErrorException(e);
 		}
@@ -106,31 +98,16 @@ public class methodoDataBase {
 		return false;
 	}
 
-	private String[] getExcludedProduct() {
-		String[] excludedValues = { "?,?,?,?,?,?,?,?,?,?" };
-		return excludedValues;
-	}
-
-	private String[] getColumnCliente() {
-		String[] columnClient = { "id", "name", "type", "id_doc_number2", "id_doc_number3", "id_doc_number4",
-				"cell_phone", "cell_phone2", "gender", "email", "birthday", "register" };
-		return columnClient;
-	}
-
-	private boolean isExcludedClient(String columnName) {
-		String[] excludedColumns = getColumnCliente();
-		for (String excludedColumn : excludedColumns) {
-			if (columnName.equals(excludedColumn)) {
-				return true;
+	private String getPlaceHolders() {
+		String[] columnProduct = getColumnProduct();
+		StringBuilder placeHolders = new StringBuilder();
+		for (int i = 0; i < columnProduct.length; i++) {
+			placeHolders.append("?");
+			if (i < columnProduct.length - 1) {
+				placeHolders.append(", ");
 			}
 		}
-		return false;
-	}
-
-	private String[] getExcludedClient() {
-		String[] excludedValues = { "?,?,?,?,?,?,?,?,?,?" };
-		return excludedValues;
-
+		return placeHolders.toString();
 	}
 
 }

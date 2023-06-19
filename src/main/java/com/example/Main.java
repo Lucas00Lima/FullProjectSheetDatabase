@@ -7,10 +7,14 @@ import org.apache.poi.EncryptedDocumentException;
 
 public class Main {
     public static void main(String[] args) throws SQLException, EncryptedDocumentException, IOException {
-        // Sistema acessa o banco de dados e pegas as colunas setando cada coluna
+        //Acessa o banco e a planilha
         Database database = new Database();
         database.connectionDatabase();
         SheetAcess sheetAcess = new SheetAcess();
         sheetAcess.acessSheet();
+        
+        //Seleção de metodo
+        methodoProduct methodoInit = new methodoProduct();
+        methodoInit.methodoProduct();
     }
 }
