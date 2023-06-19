@@ -19,8 +19,9 @@ public class methodoProduct {
 	private String password;
 	private String table;
 	private String db;
+	private StringBuilder insertQuery = new StringBuilder();
 
-	public void methodoProduct() throws SQLException {
+	public methodoProduct() throws SQLException {
 		Database data = new Database();
 		data.connectionDatabase();
 		url = data.getUrl();
@@ -32,27 +33,13 @@ public class methodoProduct {
 		try (Connection connection = DriverManager.getConnection(url, username, password)) {
 			// Tratamento das colunas
 			String[] excludedColumn = getColumnProduct();
-			StringBuilder insertQuery = new StringBuilder("INSERT INTO " + table);
-			insertQuery.append(" (");
+			insertQuery.append("INSERT INTO ").append(table).append(" (");
 			for (int i = 0; i < excludedColumn.length; i++) {
 				insertQuery.append(excludedColumn[i]);
 				if (i < excludedColumn.length - 1) {
 					insertQuery.append(",");
 				}
 			}
-			insertQuery.append(") ");
-
-			// Tratamento dos placeholders
-			String[] excludedValue = getColumnProduct();
-			StringBuilder valuePlaceholders = new StringBuilder("VALUES");
-			valuePlaceholders.append("(");
-			for (int i = 0; i < excludedValue.length; i++) {
-				valuePlaceholders.append(excludedValue[i]);
-				if (i < excludedColumn.length - 1) {
-					valuePlaceholders.append(",");
-				}
-			}
-			valuePlaceholders.append(")");
 			List<String> defaultValues = new ArrayList<>(0);
 			DatabaseMetaData metaData = (DatabaseMetaData) connection.getMetaData();
 			ResultSet resultSet = metaData.getColumns(null, null, table, null);
@@ -64,23 +51,26 @@ public class methodoProduct {
 				if (!isExcludedProduct(columnName)) {
 					if (totalColumnsInDatabase > 0) {
 						insertQuery.append(",");
-						valuePlaceholders.append(",");
 					}
 					insertQuery.append(columnName);
-					valuePlaceholders.append("?");
 					defaultValues.add(defaultValue);
 					totalColumnsInDatabase++;
 				}
 			}
 			resultSet.close();
+			insertQuery.append(")").append(" VALUES (");
+			for (int i = 0; i < totalColumnsInDatabase; i++) {
+				insertQuery.append("?");
+				if (i < totalColumnsInDatabase - 1) {
+					insertQuery.append(",");
+				}
+			}
 			insertQuery.append(")");
-			valuePlaceholders.append(")");
-			insertQuery.append(valuePlaceholders);
 			System.out.println(insertQuery.toString());
 		} catch (Error e) {
 			throw new RuntimeErrorException(e);
 		}
-	}
+}
 
 	private String[] getColumnProduct() {
 		String[] columnProduct = { "internal_code", "barcode", "name", "category_id", "description", "cost", "price",
@@ -97,17 +87,4 @@ public class methodoProduct {
 		}
 		return false;
 	}
-
-	private String getPlaceHolders() {
-		String[] columnProduct = getColumnProduct();
-		StringBuilder placeHolders = new StringBuilder();
-		for (int i = 0; i < columnProduct.length; i++) {
-			placeHolders.append("?");
-			if (i < columnProduct.length - 1) {
-				placeHolders.append(", ");
-			}
-		}
-		return placeHolders.toString();
-	}
-
 }

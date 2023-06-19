@@ -15,6 +15,5 @@ public class Main {
         
         //Seleção de metodo
         methodoProduct methodoInit = new methodoProduct();
-        methodoInit.methodoProduct();
     }
 }
