@@ -10,5 +10,6 @@
 	<classpathentry kind="lib" path="C:/Users/lukin/.m2/repository/mysql/mysql-connector-java/8.0.30/mysql-connector-java-8.0.30.jar"/>
 	<classpathentry kind="lib" path="C:/Users/lukin/.m2/repository/org/apache/poi/poi-ooxml/5.0.0/poi-ooxml-5.0.0.jar"/>
 	<classpathentry kind="lib" path="C:/Users/lukin/.m2/repository/org/apache/commons/commons-compress/1.21/commons-compress-1.21.jar"/>
+	<classpathentry kind="lib" path="C:/Users/lukin/.m2/repository/org/apache/commons/commons-collections4/4.4/commons-collections4-4.4.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>
