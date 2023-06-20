@@ -20,6 +20,8 @@ public class MethodoProduct {
 	private String password;
 	private String table;
 	private StringBuilder insertQuery = new StringBuilder();
+	private List<String> defaultValues = new ArrayList<>(0);
+	private int totalColumnInDataBase;
 
 	public String methodoProduct() throws SQLException {
 		Database data = new Database();
@@ -29,7 +31,7 @@ public class MethodoProduct {
 			password = data.getPassword();
 			table = data.getTable();
 			String defaultValue = "";
-			
+
 			// Tratamento das colunas
 			String[] excludedColumn = getColumnProduct();
 			insertQuery.append("INSERT INTO ").append(table).append(" (");
@@ -39,7 +41,6 @@ public class MethodoProduct {
 					insertQuery.append(",");
 				}
 			}
-			List<String> defaultValues = new ArrayList<>(0);
 			DatabaseMetaData metaData = (DatabaseMetaData) connection.getMetaData();
 			ResultSet resultSet = metaData.getColumns(null, null, table, null);
 			int totalColumnsInDatabase = excludedColumn.length;
@@ -52,12 +53,12 @@ public class MethodoProduct {
 						insertQuery.append(",");
 					}
 					insertQuery.append(columnName);
-					defaultValues.add(defaultValue);
+					getDefaultValues().add(defaultValue);
 					totalColumnsInDatabase++;
 				}
 			}
 			resultSet.close();
-			
+
 			//Tratamento dos placeHolder
 			insertQuery.append(")").append(" VALUES (");
 			for (int i = 0; i < totalColumnsInDatabase; i++) {
@@ -73,7 +74,7 @@ public class MethodoProduct {
 		}
 		return insertQuery.toString();
 	}
-	
+
 	private String[] getColumnProduct() {
 		String[] columnProduct = { "internal_code", "barcode", "name", "category_id", "description", "cost", "price",
 				"current_stock", "type", "type2" };
@@ -87,6 +88,14 @@ public class MethodoProduct {
 			}
 		}
 		return false;
+	}
+
+	public List<String> getDefaultValues() {
+		return defaultValues;
+	}
+
+	public int getTotalColumnInDataBase() {
+		return totalColumnInDataBase;
 	}
 
 }
