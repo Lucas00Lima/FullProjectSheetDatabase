@@ -15,6 +15,8 @@ public class Main {
         
         MethodoProduct product = new MethodoProduct();
         String resultado = product.methodoProduct();
-        System.out.println(resultado);
+
+        Query query = new Query();
+        query.query();
     }
 }
