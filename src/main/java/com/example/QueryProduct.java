@@ -5,7 +5,9 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.apache.poi.EncryptedDocumentException;
 import org.apache.poi.ss.usermodel.Cell;
@@ -15,7 +17,7 @@ import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
 
-public class Query {
+public class QueryProduct {
 	private int linhasInseridas;
 
 	public void query() throws SQLException, EncryptedDocumentException, IOException {
@@ -25,6 +27,7 @@ public class Query {
 		MethodoProduct methodo = new MethodoProduct();
 		String insertQuery = methodo.methodoProduct();
 		List<String> defaultValues = methodo.getDefaultValues();
+		
 		try (Connection connection = data.connectionDatabase()) {
 			String filePath = sheetAcess.getFilePath();
 			FileInputStream fileInputStream = new FileInputStream(filePath);
@@ -32,6 +35,8 @@ public class Query {
 			Sheet sheet = workbook.getSheetAt(0);
 			DataFormatter dataFormat = new DataFormatter();
 			int rowIndex;
+			Set<String> nomeLido = new HashSet<>();
+		
 			for (rowIndex = 1; rowIndex < sheet.getLastRowNum(); rowIndex++) {
 				Row row = sheet.getRow(rowIndex);
 				Cell barcodeCell = row.getCell(0);
@@ -40,12 +45,19 @@ public class Query {
 				Cell priceCell = row.getCell(3);
 				Cell currentStockCell = row.getCell(4);
 
-				String barcodeValue = dataFormat.formatCellValue(barcodeCell);
 				String nameValue = dataFormat.formatCellValue(nameCell);
+				if (nomeLido.contains(nameValue)) {
+					continue;
+				}
+				nomeLido.add(nameValue);
+
+				String barcodeValue = dataFormat.formatCellValue(barcodeCell);
 				double costValue = costCell.getNumericCellValue();
 				double priceValue = priceCell.getNumericCellValue();
 				double currentStockValue = currentStockCell.getNumericCellValue();
-
+				if (currentStockValue < 0 || currentStockValue == 0) {
+					continue;
+				}
 				StringBuilder insertQueryBuilder = new StringBuilder(insertQuery);
 				String finalInsertQuery = insertQueryBuilder.toString();
 				PreparedStatement preparedStatement2 = connection.prepareStatement(finalInsertQuery);

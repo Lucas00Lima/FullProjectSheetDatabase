@@ -15,12 +15,14 @@ public class MethodoProduct {
 	private StringBuilder insertQuery = new StringBuilder();
 	private List<String> defaultValues = new ArrayList<>(0);
 	private int totalColumnsInDatabase;
+	private String defaultValue = "";
 
 	public String methodoProduct() throws SQLException {
 		Database data = new Database();
 		try (Connection connection = data.connectionDatabase()) {
+			DatabaseMetaData metaData = (DatabaseMetaData) connection.getMetaData();
 			table = data.getTable();
-			String defaultValue = "";
+			ResultSet resultSet = metaData.getColumns(null, null, table, null);
 
 			// Tratamento das colunas
 			String[] excludedColumn = getColumnProduct();
@@ -31,9 +33,8 @@ public class MethodoProduct {
 					insertQuery.append(",");
 				}
 			}
-			DatabaseMetaData metaData = (DatabaseMetaData) connection.getMetaData();
-			ResultSet resultSet = metaData.getColumns(null, null, table, null);
 			totalColumnsInDatabase = excludedColumn.length;
+
 			// Loop de inclusão das demais colunas dentro do banco
 			while (resultSet.next()) {
 				String columnName = resultSet.getString("COLUMN_NAME");
