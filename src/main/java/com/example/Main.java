@@ -12,11 +12,13 @@ public class Main {
         database.connectionDatabase();
         SheetAcess sheetAcess = new SheetAcess();
         sheetAcess.acessSheet();
-        
+
         MethodoProduct product = new MethodoProduct();
-        String resultado = product.methodoProduct();
+        product.methodoProduct();
 
         Query query = new Query();
         query.query();
+        int linhasInseridas = query.getLinhasInseridas();
+        System.out.println("Affectd " + linhasInseridas);
     }
 }

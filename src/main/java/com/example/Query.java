@@ -15,11 +15,8 @@ import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
 
-//"internal_code", "barcode", "name", "category_id", "description", "cost", "price",
-//"current_stock", "type", "type2" };
-
 public class Query {
-	private Connection connection;
+	private int linhasInseridas;
 
 	public void query() throws SQLException, EncryptedDocumentException, IOException {
 		Database data = new Database();
@@ -28,7 +25,6 @@ public class Query {
 		MethodoProduct methodo = new MethodoProduct();
 		String insertQuery = methodo.methodoProduct();
 		List<String> defaultValues = methodo.getDefaultValues();
-		int totalColumnDataBase = methodo.getTotalColumnInDataBase();
 		try (Connection connection = data.connectionDatabase()) {
 			String filePath = sheetAcess.getFilePath();
 			FileInputStream fileInputStream = new FileInputStream(filePath);
@@ -36,53 +32,44 @@ public class Query {
 			Sheet sheet = workbook.getSheetAt(0);
 			DataFormatter dataFormat = new DataFormatter();
 			int rowIndex;
-			for (rowIndex = 0; rowIndex < sheet.getLastRowNum(); rowIndex++) {
+			for (rowIndex = 1; rowIndex < sheet.getLastRowNum(); rowIndex++) {
 				Row row = sheet.getRow(rowIndex);
-				Cell codeCell = row.getCell(1);
-				Cell barcodeCell = row.getCell(2);
-				Cell nameCell = row.getCell(3);
-				Cell categoryCell = row.getCell(4);
-				Cell descriptionCell = row.getCell(5);
-				Cell costCell = row.getCell(6);
-				Cell priceCell = row.getCell(7);
-				Cell currentStockCell = row.getCell(8);
-				Cell typeCell = row.getCell(9);
-				Cell type2Cell = row.getCell(10);
+				Cell barcodeCell = row.getCell(0);
+				Cell nameCell = row.getCell(1);
+				Cell costCell = row.getCell(2);
+				Cell priceCell = row.getCell(3);
+				Cell currentStockCell = row.getCell(4);
 
-				String codeValue = dataFormat.formatCellValue(codeCell);
 				String barcodeValue = dataFormat.formatCellValue(barcodeCell);
 				String nameValue = dataFormat.formatCellValue(nameCell);
-				String categoryValue = dataFormat.formatCellValue(categoryCell);
-				String descriptionValue = dataFormat.formatCellValue(descriptionCell);
-				String costValue = dataFormat.formatCellValue(costCell);
-				String priceValue = dataFormat.formatCellValue(priceCell);
-				String currentStockValue = dataFormat.formatCellValue(currentStockCell);
-				String typeValue = dataFormat.formatCellValue(typeCell);
-				String type2Value = dataFormat.formatCellValue(type2Cell);
+				double costValue = costCell.getNumericCellValue();
+				double priceValue = priceCell.getNumericCellValue();
+				double currentStockValue = currentStockCell.getNumericCellValue();
 
-				PreparedStatement preparedStatement = connection.prepareStatement(insertQuery.toString());
-				preparedStatement.setString(1, codeValue);
-				preparedStatement.setString(2, barcodeValue);
-				preparedStatement.setString(3, nameValue);
-				preparedStatement.setString(4, categoryValue);
-				preparedStatement.setString(5, descriptionValue);
-				preparedStatement.setString(6, costValue);
-				preparedStatement.setString(7, priceValue);
-				preparedStatement.setString(8, currentStockValue);
-				preparedStatement.setString(9, typeValue);
-				preparedStatement.setString(10, type2Value);
+				StringBuilder insertQueryBuilder = new StringBuilder(insertQuery);
+				String finalInsertQuery = insertQueryBuilder.toString();
+				PreparedStatement preparedStatement2 = connection.prepareStatement(finalInsertQuery);
+				preparedStatement2.setString(1, barcodeValue);
+				preparedStatement2.setString(2, nameValue);
+				preparedStatement2.setDouble(3, costValue);
+				preparedStatement2.setDouble(4, priceValue);
+				preparedStatement2.setDouble(5, currentStockValue);
 
 				for (int j = 0; j < defaultValues.size(); j++) {
 					String value = defaultValues.get(j);
 					if (value.isEmpty()) {
-						preparedStatement.setString(j + totalColumnDataBase, "");
+						preparedStatement2.setInt(j + 6, 0);
 					} else {
-						preparedStatement.setInt(j + totalColumnDataBase, 0);
-					}
+						preparedStatement2.setString(j + 6, value);
 				}
-				preparedStatement.execute();
+				}
+				preparedStatement2.execute();
+				linhasInseridas++;
 			}
-			System.out.println(insertQuery.toString());
 		}
+	}
+
+	public int getLinhasInseridas() {
+		return linhasInseridas;
 	}
 }
