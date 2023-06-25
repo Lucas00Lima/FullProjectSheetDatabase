@@ -51,7 +51,18 @@ public class MethodoClient {
 				getDefaultValues().add(defaultValue);
 				totalColumnsInDatabase++;
 			}
-			System.out.println(columnNames);
+			resultSet.close();
+
+			insertQuery.append(")").append(" VALUES (");
+			for (int i = 0; i < totalColumnsInDatabase; i++) {
+				insertQuery.append("?");
+				if (i < totalColumnsInDatabase - 1) {
+					insertQuery.append(",");
+				}
+			}
+			insertQuery.append(")");
+			connection.close();
+			System.out.println(insertQuery.toString());
 		} catch (Error e) {
 			throw new RuntimeErrorException(e);
 		}
