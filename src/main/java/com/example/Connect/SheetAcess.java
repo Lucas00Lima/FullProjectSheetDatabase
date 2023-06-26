@@ -1,4 +1,4 @@
-package com.example;
+package com.example.Connect;
 
 import java.io.IOException;
 
