@@ -13,18 +13,15 @@ import javax.management.RuntimeErrorException;
 import com.mysql.cj.jdbc.DatabaseMetaData;
 
 public class MethodoClient {
-	private String table;
 	private StringBuilder insertQuery = new StringBuilder();
 	private int totalColumnsInDatabase;
 	private List<String> defaultValues = new ArrayList<>(0);
 	private String defaultValue = "";
-	private Set<String> columnNames = new HashSet();
+	private Set<String> columnNames = new HashSet<String>();
 
-	public void methodoClient() throws SQLException {
-		Database data = new Database();
-		data.connectionDatabase();
-		table = data.getTable();
-		try (Connection connection = data.connectionDatabase()) {
+	public String methodoClient(Connection connection, String table) throws SQLException {
+		try {
+			System.out.println(table);
 			DatabaseMetaData metaData = (DatabaseMetaData) connection.getMetaData();
 			ResultSet resultSet = metaData.getColumns(null, null, table, null);
 			String[] excludedColumns = getColumnCliente();
@@ -61,15 +58,14 @@ public class MethodoClient {
 				}
 			}
 			insertQuery.append(")");
-			connection.close();
-			System.out.println(insertQuery.toString());
 		} catch (Error e) {
 			throw new RuntimeErrorException(e);
 		}
+		return insertQuery.toString();
 	}
 
 	private String[] getColumnCliente() {
-		String[] columnClient = { "id", "name", "type", "id_doc_number2", "id_doc_number3", "id_doc_number4",
+		String[] columnClient = { "id", "name", "type1", "id_doc_number2", "id_doc_number3", "id_doc_number4",
 				"cell_phone", "cell_phone2", "gender", "email", "birthday", "register" };
 		return columnClient;
 	}
