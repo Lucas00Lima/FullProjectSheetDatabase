@@ -27,7 +27,6 @@ public class QueryProduct {
 			throws SQLException, EncryptedDocumentException, IOException {
 		if (tableName == 0) {
 			SheetAcess sheetAcess = new SheetAcess();
-			sheetAcess.acessSheet();
 			MethodoProduct methodo = new MethodoProduct();
 			String insertQuery = methodo.methodoProduct(connection, tableName);
 			List<String> defaultValues = methodo.getDefaultValues();

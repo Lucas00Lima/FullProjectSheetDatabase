@@ -22,7 +22,7 @@ public class MethodoClient {
 	public String methodoClient(Connection connection, int tableName) throws SQLException {
 		if (tableName == 1) {
 			try {
-				String table = "product";
+				String table = "client";
 				DatabaseMetaData metaData = (DatabaseMetaData) connection.getMetaData();
 				ResultSet resultSet = metaData.getColumns(null, null, table, null);
 				String[] excludedColumns = getColumnCliente();

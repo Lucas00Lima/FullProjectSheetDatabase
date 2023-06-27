@@ -44,7 +44,7 @@ public class MethodoProduct {
 							insertQuery.append(",");
 						}
 						insertQuery.append(columnName);
-						getDefaultValues().add(defaultValue);
+						getDefaultValues().add(defaultValue); //???
 						totalColumnsInDatabase++;
 					}
 					if (columnName.equals("deleted_at")) {
@@ -71,7 +71,7 @@ public class MethodoProduct {
 	}
 
 	private String[] getColumnProduct() {
-		String[] columnProduct = { "barcode", "name", "cost", "price", "current_stock" };
+		String[] columnProduct = { "internal_code" , "barcode" , "name", "description" , "type" , "type2" , "cost" , "price" , "ncm" , "cfop" , "current_stock" };
 		return columnProduct;
 	}
 

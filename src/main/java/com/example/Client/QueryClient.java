@@ -8,6 +8,8 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.List;
 
+import javax.swing.text.html.HTMLDocument.HTMLReader.PreAction;
+
 import org.apache.poi.EncryptedDocumentException;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.DataFormatter;
@@ -22,15 +24,14 @@ import com.ibm.icu.text.SimpleDateFormat;
 public class QueryClient {
 	private int linhasInseridas;
 
-	public void queryClient(Connection connection, int tableName)
+	public void queryClient(Connection connection, int tableName, String sheetAcess)
 			throws SQLException, EncryptedDocumentException, IOException {
 		if (tableName == 1) {
-			SheetAcess sheetAcess = new SheetAcess();
 			MethodoClient methodo = new MethodoClient();
 			String insertQuery = methodo.methodoClient(connection, tableName);
 			List<String> defaultValues = methodo.getDefaultValues();
 			try {
-				String filePath = sheetAcess.getFilePath();
+				String filePath = sheetAcess;
 				FileInputStream fileInputStream = new FileInputStream(filePath);
 				Workbook workbook = WorkbookFactory.create(fileInputStream);
 				Sheet sheet = workbook.getSheetAt(0);
@@ -44,21 +45,21 @@ public class QueryClient {
 					Cell name = row.getCell(1);
 					Cell typeDoc = row.getCell(2);
 					Cell numberDoc = row.getCell(3);
-					Cell typeDoc1 = row.getCell(4);
-					Cell numberDoc1 = row.getCell(5);
-					Cell cell_phone = row.getCell(6);
-					Cell cell_phone2 = row.getCell(7);
-					Cell gender = row.getCell(8);
-					Cell email = row.getCell(9);
-					Cell aniver = row.getCell(10);
-					Cell registro = row.getCell(11);
+//					Cell typeDoc1 = row.getCell(4);
+					Cell numberDoc1 = row.getCell(4);
+					Cell cell_phone = row.getCell(5);
+					Cell cell_phone2 = row.getCell(6);
+					Cell gender = row.getCell(7);
+					Cell email = row.getCell(8);
+					Cell aniver = row.getCell(9);
+					Cell registro = row.getCell(10);
 
 					String idValue = dataFormatter.formatCellValue(id);
 					int idDouble = Integer.parseInt(idValue);
 					String nameValue = dataFormatter.formatCellValue(name);
 					String type1Value = dataFormatter.formatCellValue(typeDoc);
 					String numberDocValue = dataFormatter.formatCellValue(numberDoc);
-					String typeDoc1Value = dataFormatter.formatCellValue(typeDoc1);
+//					String typeDoc1Value = dataFormatter.formatCellValue(typeDoc1);
 					String numberDoc1Value = dataFormatter.formatCellValue(numberDoc1);
 					String cell_phoneValue = dataFormatter.formatCellValue(cell_phone);
 					String cell_phone2Value = dataFormatter.formatCellValue(cell_phone2);
@@ -96,17 +97,19 @@ public class QueryClient {
 					if (type1Value.equals("CPF")) {
 						preparedStatement.setString(4, numberDocValue); // CPF
 						preparedStatement.setString(5, "");
+						preparedStatement.setString(6, "");
 					} else {
-						preparedStatement.setString(4, "");
-						preparedStatement.setString(5, numberDocValue); // CNPJ
+						preparedStatement.setString(4, ""); // CNPJ
+						preparedStatement.setString(5, numberDocValue); // IE
+						preparedStatement.setString(6, numberDoc1Value); // IE
+						
 					}
-					preparedStatement.setString(6, numberDoc1Value); // IE
 					preparedStatement.setString(7, cell_phoneValue); // Celular
 					preparedStatement.setString(8, cell_phone2Value); // Celular2
-					preparedStatement.setString(9, genderValue); // M & F
-					preparedStatement.setString(10, emailValue); // Email
+					preparedStatement.setString(9, genderValue); // Masculino ou Feminino
+					preparedStatement.setString(10, emailValue); // E-mail
 					preparedStatement.setString(11, formattedBirthday); // Data de nascimento
-					preparedStatement.setString(12, formattedRegister); // Registro
+					preparedStatement.setString(12, formattedRegister); // Data de Registro
 					for (int j = 0; j < defaultValues.size(); j++) {
 						String value = defaultValues.get(j);
 						if (value.isEmpty()) {
