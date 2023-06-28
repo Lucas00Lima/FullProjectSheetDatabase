@@ -62,7 +62,6 @@ public class MethodoProduct {
 					}
 				}
 				insertQuery.append(")");
-				connection.close();
 			} catch (Error e) {
 				throw new RuntimeErrorException(e);
 			}
@@ -71,7 +70,7 @@ public class MethodoProduct {
 	}
 
 	private String[] getColumnProduct() {
-		String[] columnProduct = { "internal_code" , "barcode" , "name", "description" , "type" , "type2" , "cost" , "price" , "ncm" , "cfop" , "current_stock" };
+		String[] columnProduct = { "internal_code" , "barcode" , "name", "description" , "type" , "type2" , "cost" , "price" , "ncm" , "cfop" , "tax4_code" , "tax_code" , "tax1" , "tax2-code" , "tax2" , "tax3_code" , "tax3" , "current_stock" };
 		return columnProduct;
 	}
 

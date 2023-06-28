@@ -13,12 +13,12 @@ public class Database {
 	private String url;
 	private int tableName;
 	public Connection connectionDatabase() throws SQLException {
-		username = "root"; //JOptionPane.showInputDialog("Nome do usuario do banco de dados");
-		password = "@soma+"; //JOptionPane.showInputDialog("Insira a senha do banco de dados");
-		db = "db000"; //JOptionPane.showInputDialog("Nome do banco a qual deseja acessar");
+		username = "root"; //JOptionPane.showInputDialog("Nome do usuario do banco de dados"); 
+		password = JOptionPane.showInputDialog("Insira a senha do banco de dados"); // "@soma+"; //
+		db = "db000"; //JOptionPane.showInputDialog("Nome do banco a qual deseja acessar"); //
 		url = "jdbc:mysql://localhost:3306/" + db;
 		String[] optionTable = {"Product", "Client"};
-		tableName = 0; //JOptionPane.showOptionDialog(null, "Qual tabela deseja utilizar", "Tabela", JOptionPane.OK_OPTION, JOptionPane.INFORMATION_MESSAGE, null, optionTable,null);
+		tableName = JOptionPane.showOptionDialog(null, "Qual tabela deseja utilizar", "Tabela", JOptionPane.OK_OPTION, JOptionPane.INFORMATION_MESSAGE, null, optionTable,null);
 		if (tableName == 0) {
 			JOptionPane.showMessageDialog(null, "Você selecionou a tabela PRODUCT");
 		} else {

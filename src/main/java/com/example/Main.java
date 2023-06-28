@@ -22,32 +22,23 @@ public class Main {
 	public static void main(String[] args) throws SQLException, EncryptedDocumentException, IOException {
 		// Acessa o banco e a planilha
 		Database database = new Database();
-		SheetAcess sheet = new SheetAcess();
-		String sheetAcess = sheet.acessSheet();
 		Connection connection = database.connectionDatabase();
 		int tableName = database.getTableName();
+		SheetAcess sheet = new SheetAcess();
+		String sheetAcess = sheet.acessSheet();
 
 		if (tableName == 0) {
 			System.out.println("Rodando a Query de Product");
 			MethodoProduct product = new MethodoProduct();
 			product.methodoProduct(connection, tableName);
-			QueryPadrao queryPadrao = new QueryPadrao();
-			queryPadrao.queryPadrao(connection, tableName);
-			
-			
-			
-			
-			
-			
-			
-			
-			
-//			QueryProduct queryProduct = new QueryProduct();
-//			queryProduct.query(connection, tableName);
-//			QueryAddProduct queryAddProduct = new QueryAddProduct();
-//			queryAddProduct.queryAdd(connection, tableName);
-//			int linhasInseridas = queryProduct.getLinhasInseridas();
-//			System.out.println("Affectd " + linhasInseridas);
+//			QueryPadrao queryPadrao = new QueryPadrao();
+//			queryPadrao.queryPadrao(connection, tableName);
+			QueryProduct queryProduct = new QueryProduct();
+			queryProduct.query(connection, tableName);
+			QueryAddProduct queryAddProduct = new QueryAddProduct();
+			queryAddProduct.queryAdd(connection, tableName);
+			int linhasInseridas = queryProduct.getLinhasInseridas();
+			System.out.println("Affectd " + linhasInseridas);
 
 		} else {
 			System.out.println("Rodando a Query de Client");

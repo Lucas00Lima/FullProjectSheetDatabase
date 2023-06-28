@@ -45,7 +45,6 @@ public class QueryClient {
 					Cell name = row.getCell(1);
 					Cell typeDoc = row.getCell(2);
 					Cell numberDoc = row.getCell(3);
-//					Cell typeDoc1 = row.getCell(4);
 					Cell numberDoc1 = row.getCell(4);
 					Cell cell_phone = row.getCell(5);
 					Cell cell_phone2 = row.getCell(6);
@@ -59,10 +58,19 @@ public class QueryClient {
 					String nameValue = dataFormatter.formatCellValue(name);
 					String type1Value = dataFormatter.formatCellValue(typeDoc);
 					String numberDocValue = dataFormatter.formatCellValue(numberDoc);
-//					String typeDoc1Value = dataFormatter.formatCellValue(typeDoc1);
 					String numberDoc1Value = dataFormatter.formatCellValue(numberDoc1);
 					String cell_phoneValue = dataFormatter.formatCellValue(cell_phone);
 					String cell_phone2Value = dataFormatter.formatCellValue(cell_phone2);
+
+					int tamanhophone = cell_phoneValue.length();
+					if (tamanhophone < 9 || tamanhophone == 9) {
+						cell_phoneValue = "";
+					}
+					int tamanhophone2 = cell_phone2Value.length();
+					if (tamanhophone2 < 9 || tamanhophone2 == 9) {
+						cell_phone2Value = "";
+					}
+
 					String genderValue = dataFormatter.formatCellValue(gender);
 
 					if (genderValue.equals("F")) {
@@ -89,7 +97,6 @@ public class QueryClient {
 					} else {
 						typeResult = 2;
 					}
-
 					PreparedStatement preparedStatement = connection.prepareStatement(insertQuery);
 					preparedStatement.setInt(1, idDouble); // Id
 					preparedStatement.setString(2, nameValue); // Name
@@ -102,7 +109,7 @@ public class QueryClient {
 						preparedStatement.setString(4, ""); // CNPJ
 						preparedStatement.setString(5, numberDocValue); // IE
 						preparedStatement.setString(6, numberDoc1Value); // IE
-						
+
 					}
 					preparedStatement.setString(7, cell_phoneValue); // Celular
 					preparedStatement.setString(8, cell_phone2Value); // Celular2
