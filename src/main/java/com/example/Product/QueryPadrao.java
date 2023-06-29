@@ -3,6 +3,7 @@ package com.example.Product;
 import java.io.FileInputStream;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.util.List;
 
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.DataFormatter;
@@ -10,8 +11,6 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
-
-import com.example.Connect.SheetAcess;
 //print_production = 1 para imprimir a comanda de produção
 
 	/*Documentação
@@ -38,18 +37,19 @@ import com.example.Connect.SheetAcess;
 */
 
 public class QueryPadrao {
-	public void queryPadrao(Connection connection, int tableName) {
+	public void queryPadrao(Connection connection, int tableName, String sheetAcess) {
 		if (tableName == 0) {
 			String table = "PRODUCT";
 			try {
 				MethodoProduct methodo = new MethodoProduct();
 				String insertQuery = methodo.methodoProduct(connection, tableName);
-				SheetAcess sheetAcess = new SheetAcess();
-				String filePath = sheetAcess.getFilePath();
+				String filePath = sheetAcess;
 				FileInputStream fileInput = new FileInputStream(filePath);
 				Workbook workbook = WorkbookFactory.create(fileInput);
 				Sheet sheet = workbook.getSheetAt(0);
 				DataFormatter dataFormatter = new DataFormatter();
+				List<String> defaultValues = methodo.getDefaultValues();
+				int linhasInseridas = 0;
 
 				//Pegas as celulas de cada coluna
 				int rowIndex;
@@ -74,17 +74,17 @@ public class QueryPadrao {
 					Cell cofinscodCell = row.getCell(16);
 					Cell cofinsCell = row.getCell(17);
 
-					int codeValue = (int) codeCell.getNumericCellValue();
+					String codeValue = dataFormatter.formatCellValue(codeCell);
 					String barcodeValue = dataFormatter.formatCellValue(barcodeCell);
 					String nameValue = dataFormatter.formatCellValue(nameCell);
 					String descriptionValue = dataFormatter.formatCellValue(descriptionCell);
-					
+
 					String typeValue = dataFormatter.formatCellValue(typeCell); //Origem
 					String type2Value = dataFormatter.formatCellValue(type2Cell); //Tipo
-					
+
 					String costValue = dataFormatter.formatCellValue(costCell);
 					String priceValue = dataFormatter.formatCellValue(priceCell);
-					
+
 					String ncmValue = dataFormatter.formatCellValue(ncmCell);
 					String cfopValue = dataFormatter.formatCellValue(cfopCell);
 					String cestValue = dataFormatter.formatCellValue(cestCell);
@@ -94,11 +94,11 @@ public class QueryPadrao {
 					String pisValue = dataFormatter.formatCellValue(pisCell);
 					String cofinscodValue = dataFormatter.formatCellValue(cofinscodCell);
 					String cofinsValue = dataFormatter.formatCellValue(cofinsCell);
-					
+
 					String currentStockValue = dataFormatter.formatCellValue(currentStockCell);
 
 					PreparedStatement preparedStatement = connection.prepareStatement(insertQuery);
-					preparedStatement.setInt(1, codeValue);
+					preparedStatement.setString(1, codeValue);
 					preparedStatement.setString(2, barcodeValue);
 					preparedStatement.setString(3, nameValue);
 					preparedStatement.setString(4, descriptionValue);
@@ -106,7 +106,7 @@ public class QueryPadrao {
 					preparedStatement.setString(6, type2Value);
 					preparedStatement.setString(7, costValue);
 					preparedStatement.setString(8, priceValue);
-					
+
 					preparedStatement.setString(9, ncmValue);
 					preparedStatement.setString(10, cfopValue);
 					preparedStatement.setString(11, cestValue);
@@ -117,11 +117,20 @@ public class QueryPadrao {
 					preparedStatement.setString(16, cofinscodValue);
 					preparedStatement.setString(17, cofinsValue);
 					preparedStatement.setString(18, currentStockValue);
-					System.out.println(insertQuery);
+					for (int j = 0; j < defaultValues.size(); j++) {
+						String value = defaultValues.get(j);
+						if (value.isEmpty()) {
+							preparedStatement.setInt(j + 19, 0);
+						} else {
+							preparedStatement.setString(j + 19, value);
+						}
+					}
+					preparedStatement.execute();
+					linhasInseridas++;
 				}
-			}
-			catch (Exception e) {
-				System.out.println("Erro Query Padrão");
+				System.out.println(linhasInseridas);
+			} catch (Exception e) {
+				e.printStackTrace();
 			}
 		}
 	}

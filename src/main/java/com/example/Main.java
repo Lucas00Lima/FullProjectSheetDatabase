@@ -31,23 +31,23 @@ public class Main {
 			System.out.println("Rodando a Query de Product");
 			MethodoProduct product = new MethodoProduct();
 			product.methodoProduct(connection, tableName);
-//			QueryPadrao queryPadrao = new QueryPadrao();
-//			queryPadrao.queryPadrao(connection, tableName);
-			QueryProduct queryProduct = new QueryProduct();
-			queryProduct.query(connection, tableName);
-			QueryAddProduct queryAddProduct = new QueryAddProduct();
-			queryAddProduct.queryAdd(connection, tableName);
-			int linhasInseridas = queryProduct.getLinhasInseridas();
-			System.out.println("Affectd " + linhasInseridas);
+			QueryPadrao queryPadrao = new QueryPadrao();
+			queryPadrao.queryPadrao(connection, tableName, sheetAcess);
+//			QueryProduct queryProduct = new QueryProduct();
+//			queryProduct.query(connection, tableName);
+//			QueryAddProduct queryAddProduct = new QueryAddProduct();
+//			queryAddProduct.queryAdd(connection, tableName);
+//			int linhasInseridas = queryProduct.getLinhasInseridas();
+			System.out.println("Affectd " );//linhasInseridas);
 
 		} else {
 			System.out.println("Rodando a Query de Client");
 			MethodoClient methodoClient = new MethodoClient();
 			methodoClient.methodoClient(connection, tableName);
 			QueryClient queryClient = new QueryClient();
-			queryClient.queryClient(connection, tableName, sheetAcess);
-			QueryAddClient queryAddClient = new QueryAddClient();
-			queryAddClient.queryAddClient(connection, tableName, sheetAcess);
+//			queryClient.queryClient(connection, tableName, sheetAcess);
+//			QueryAddClient queryAddClient = new QueryAddClient();
+//			queryAddClient.queryAddClient(connection, tableName, sheetAcess);
 			connection.close();
 			int linhasInseridas = queryClient.getLinhasInseridas();
 			System.out.println("Affected = " + linhasInseridas);
