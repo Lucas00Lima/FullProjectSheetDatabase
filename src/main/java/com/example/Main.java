@@ -14,6 +14,7 @@ import com.example.Client.QueryClient;
 import com.example.Connect.Database;
 import com.example.Connect.SheetAcess;
 import com.example.Product.MethodoProduct;
+import com.example.Product.QueryAddPadraoProduct;
 import com.example.Product.QueryAddProduct;
 import com.example.Product.QueryPadrao;
 import com.example.Product.QueryProduct;
@@ -23,11 +24,11 @@ public class Main {
 		// Acessa o banco e a planilha
 		Database database = new Database();
 		Connection connection = database.connectionDatabase();
-		int tableName = database.getTableName();
+		String tableName = database.getTableName();
 		SheetAcess sheet = new SheetAcess();
 		String sheetAcess = sheet.acessSheet();
 
-		if (tableName == 0) {
+		if (tableName.equals("product")) {
 			System.out.println("Rodando a Query de Product");
 			MethodoProduct product = new MethodoProduct();
 			product.methodoProduct(connection, tableName);
@@ -38,12 +39,14 @@ public class Main {
 //			QueryAddProduct queryAddProduct = new QueryAddProduct();
 //			queryAddProduct.queryAdd(connection, tableName);
 //			int linhasInseridas = queryProduct.getLinhasInseridas();
+//			QueryAddPadraoProduct query = new QueryAddPadraoProduct();
+//			query.queryPadraoProduct(connection,tableName);
 			System.out.println("Affectd " );//linhasInseridas);
 
 		} else {
 			System.out.println("Rodando a Query de Client");
 			MethodoClient methodoClient = new MethodoClient();
-			methodoClient.methodoClient(connection, tableName);
+//			methodoClient.methodoClient(connection, tableName);
 			QueryClient queryClient = new QueryClient();
 //			queryClient.queryClient(connection, tableName, sheetAcess);
 //			QueryAddClient queryAddClient = new QueryAddClient();

@@ -17,16 +17,14 @@ public class MethodoProduct {
 	private int totalColumnsInDatabase;
 	private String defaultValue = "";
 
-	public String methodoProduct(Connection connection, int tableName) throws SQLException {
-		if (tableName == 0) {
+	public String methodoProduct(Connection connection, String tableName) throws SQLException {
 			try {
-				String table = "Product";
 				DatabaseMetaData metaData = (DatabaseMetaData) connection.getMetaData();
-				ResultSet resultSet = metaData.getColumns(null, null, table, null);
+				ResultSet resultSet = metaData.getColumns(null, null, tableName, null);
 
 				// Tratamento das colunas
 				String[] excludedColumn = getColumnProduct();
-				insertQuery.append("INSERT INTO ").append(table).append(" (");
+				insertQuery.append("INSERT INTO ").append(tableName).append(" (");
 				for (int i = 0; i < excludedColumn.length; i++) {
 					insertQuery.append(excludedColumn[i]);
 					if (i < excludedColumn.length - 1) {
@@ -65,7 +63,6 @@ public class MethodoProduct {
 			} catch (Error e) {
 				throw new RuntimeErrorException(e);
 			}
-		}
 		return insertQuery.toString();
 	}
 

@@ -7,25 +7,22 @@ import java.sql.SQLException;
 import com.example.Connect.Database;
 
 public class QueryAddProduct {
-	public void queryAdd(Connection connection, int tableName) throws SQLException {
-		if (tableName == 1) {
+	public void queryAdd(Connection connection, String tableName) throws SQLException {
 		try {
 			Database data = new Database();
-			String table = "Product";
-			PreparedStatement addStatement = connection.prepareStatement("UPDATE " + table + " SET internal_code = id");
-			addStatement.addBatch("UPDATE " + table + " SET description = ''");
-			addStatement.addBatch("UPDATE " + table + " SET type = 1");
-			addStatement.addBatch("UPDATE " + table + " SET category_id = 2");
-			addStatement.addBatch("UPDATE " + table + " SET department_id = 1");
-			addStatement.addBatch("UPDATE " + table + " SET measure_unit = 'u'");
-			addStatement.addBatch("UPDATE " + table + " SET production_group = 1");
-			addStatement.addBatch("UPDATE " + table + " SET panel = 1");
-			addStatement.addBatch("UPDATE " + table + " SET active = 1");
-			addStatement.addBatch("UPDATE " + table + " SET hall_table = 1");
+			PreparedStatement addStatement = connection.prepareStatement("UPDATE " + tableName + " SET internal_code = id");
+			addStatement.addBatch("UPDATE " + tableName + " SET description = ''");
+			addStatement.addBatch("UPDATE " + tableName + " SET type = 1");
+			addStatement.addBatch("UPDATE " + tableName + " SET category_id = 2");
+			addStatement.addBatch("UPDATE " + tableName + " SET department_id = 1");
+			addStatement.addBatch("UPDATE " + tableName + " SET measure_unit = 'u'");
+			addStatement.addBatch("UPDATE " + tableName + " SET production_group = 1");
+			addStatement.addBatch("UPDATE " + tableName + " SET panel = 1");
+			addStatement.addBatch("UPDATE " + tableName + " SET active = 1");
+			addStatement.addBatch("UPDATE " + tableName + " SET hall_table = 1");
 			addStatement.executeBatch();
 		} catch (Exception e) {
 			System.out.println("ERRO QUERY ADD");
 		}
-	}
 	}
 }
