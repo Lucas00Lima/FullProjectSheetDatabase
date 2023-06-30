@@ -16,6 +16,7 @@ import com.example.Connect.SheetAcess;
 import com.example.Product.MethodoProduct;
 import com.example.Product.QueryAddPadraoProduct;
 import com.example.Product.QueryAddProduct;
+import com.example.Product.MethodoCategory;
 import com.example.Product.QueryPadrao;
 import com.example.Product.QueryProduct;
 
@@ -32,16 +33,24 @@ public class Main {
 			System.out.println("Rodando a Query de Product");
 			MethodoProduct product = new MethodoProduct();
 			product.methodoProduct(connection, tableName);
+			
 			QueryPadrao queryPadrao = new QueryPadrao();
 			queryPadrao.queryPadrao(connection, tableName, sheetAcess);
+			
+			MethodoCategory methodoCategory = new MethodoCategory();
+			methodoCategory.methodoCategory(connection);
+			
+			
 //			QueryProduct queryProduct = new QueryProduct();
 //			queryProduct.query(connection, tableName);
+			
 //			QueryAddProduct queryAddProduct = new QueryAddProduct();
 //			queryAddProduct.queryAdd(connection, tableName);
-//			int linhasInseridas = queryProduct.getLinhasInseridas();
+
 //			QueryAddPadraoProduct query = new QueryAddPadraoProduct();
-//			query.queryPadraoProduct(connection,tableName);
-			System.out.println("Affectd " );//linhasInseridas);
+//			query.queryAddPadraoProduct(connection,tableName);
+			
+//			System.out.println("Affectd " + queryPadrao.getLinhasInseridas());
 
 		} else {
 			System.out.println("Rodando a Query de Client");

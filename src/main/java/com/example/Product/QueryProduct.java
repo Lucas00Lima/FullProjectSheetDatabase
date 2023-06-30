@@ -23,9 +23,8 @@ import com.example.Connect.SheetAcess;
 public class QueryProduct {
 	private int linhasInseridas;
 
-	public void query(Connection connection, int tableName)
+	public void query(Connection connection, String tableName)
 			throws SQLException, EncryptedDocumentException, IOException {
-		if (tableName == 0) {
 			SheetAcess sheetAcess = new SheetAcess();
 			MethodoProduct methodo = new MethodoProduct();
 			String insertQuery = methodo.methodoProduct(connection, tableName);
@@ -85,7 +84,6 @@ public class QueryProduct {
 				System.out.println("ERRO NA QUERYPRODUCT");
 			}
 		}
-	}
 
 	public int getLinhasInseridas() {
 		return linhasInseridas;

@@ -1,9 +1,11 @@
 use db000;
-describe client;
+describe product;
 truncate client;
 truncate product;
 select * from product;
-0show tables;
+select * from category;
+describe category;
+show tables;
 select * from next_id;
 alter table client modify column id_doc_number VARCHAR(30) not null;
 update client set phone = "";
