@@ -79,54 +79,99 @@ public class QueryPadrao {
 					String nameValue = dataFormatter.formatCellValue(nameCell);
 					String descriptionValue = dataFormatter.formatCellValue(descriptionCell);
 
-					String typeValue = dataFormatter.formatCellValue(typeCell); //Origem
-					String type2Value = dataFormatter.formatCellValue(type2Cell); //Tipo
+					String typeValueString = dataFormatter.formatCellValue(typeCell); //Origem
+					int typeValue;
+					if (typeValueString == "") {
+						typeValue = 2;
+					} else {
+						typeValue = 1;
+					}
+					String type2ValueString = dataFormatter.formatCellValue(type2Cell); //Tipo
+					int type2Value = 0;
+					if (type2ValueString == "") {
+						type2Value = 1;
+					} if (type2ValueString == "2") {
+						type2Value = 2;
+					}
+					String costValueString = dataFormatter.formatCellValue(costCell);
+					int costValue = 0;// = Integer.parseInt(costValueString);
+					if (costValueString.equals("")) {
+						costValue = 10;
+					}
 
-					String costValue = dataFormatter.formatCellValue(costCell);
-					String priceValue = dataFormatter.formatCellValue(priceCell);
+					String priceValueString = dataFormatter.formatCellValue(priceCell);
+					int priceValue = 0;
+					if (priceValueString.equals("")) {
+						priceValue = 5;
+					}
 
 					String ncmValue = dataFormatter.formatCellValue(ncmCell);
 					String cfopValue = dataFormatter.formatCellValue(cfopCell);
 					String cestValue = dataFormatter.formatCellValue(cestCell);
 					String cstValue = dataFormatter.formatCellValue(cstCell);
-					String icmsValue = dataFormatter.formatCellValue(icmsCell);
+
+					String icmsValueString = dataFormatter.formatCellValue(icmsCell);
+					int icmsValue = 0;
+					if (icmsValueString.equals("")) {
+						icmsValue = 10 * 1000;
+					}
+
 					String piscodeValue = dataFormatter.formatCellValue(piscodCell);
-					String pisValue = dataFormatter.formatCellValue(pisCell);
+
+					String pisValueString = dataFormatter.formatCellValue(pisCell);
+					int pisValue = 0;
+					if (pisValueString.equals("")) {
+						pisValue = 10;
+					}
+
 					String cofinscodValue = dataFormatter.formatCellValue(cofinscodCell);
-					String cofinsValue = dataFormatter.formatCellValue(cofinsCell);
 
-					String currentStockValue = dataFormatter.formatCellValue(currentStockCell);
+					String cofinsValueString = dataFormatter.formatCellValue(cofinsCell);
+					int cofinsValue = 0;
+					if (cofinsValueString.equals("")) {
+						cofinsValue = 5;
+					}
 
+					String currentStockValueString = dataFormatter.formatCellValue(currentStockCell);
+					int currentStockValue = 0;
+					if (currentStockValueString.equals("")) {
+						currentStockValue = 50;
+					}
+					
+					if (nameValue.equals("")) {
+						continue;
+					} else {
 					PreparedStatement preparedStatement = connection.prepareStatement(insertQuery);
 					preparedStatement.setString(1, codeValue);
 					preparedStatement.setString(2, barcodeValue);
 					preparedStatement.setString(3, nameValue);
 					preparedStatement.setString(4, descriptionValue);
-					preparedStatement.setString(5, typeValue);
-					preparedStatement.setString(6, type2Value);
-					preparedStatement.setString(7, costValue);
-					preparedStatement.setString(8, priceValue);
+					preparedStatement.setInt(5, typeValue);
+					preparedStatement.setInt(6, type2Value);
+					preparedStatement.setInt(7, costValue);
+					preparedStatement.setInt(8, priceValue);
 
 					preparedStatement.setString(9, ncmValue);
 					preparedStatement.setString(10, cfopValue);
 					preparedStatement.setString(11, cestValue);
 					preparedStatement.setString(12, cstValue);
-					preparedStatement.setString(13, icmsValue);
+					preparedStatement.setInt(13, icmsValue);
 					preparedStatement.setString(14, piscodeValue);
-					preparedStatement.setString(15, pisValue);
+					preparedStatement.setInt(15, pisValue);
 					preparedStatement.setString(16, cofinscodValue);
-					preparedStatement.setString(17, cofinsValue);
-					preparedStatement.setString(18, currentStockValue);
+					preparedStatement.setInt(17, cofinsValue);
+					preparedStatement.setInt(18, currentStockValue);
 					for (int j = 0; j < defaultValues.size(); j++) {
 						String value = defaultValues.get(j);
 						if (value.isEmpty()) {
-							preparedStatement.setInt(j + 19, 0);
+							preparedStatement.setInt(j + 19, 1);
 						} else {
 							preparedStatement.setString(j + 19, value);
 						}
 					}
 					preparedStatement.execute();
 					linhasInseridas++;
+					}
 				}
 				System.out.println(linhasInseridas);
 			} catch (Exception e) {
