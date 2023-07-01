@@ -10,9 +10,9 @@ import java.util.List;
 import com.mysql.cj.jdbc.DatabaseMetaData;
 
 public class MethodoCategory {
-	private List<String> defaultList = new ArrayList<>();
-	private String defaultLists = "";
-
+	private List<String> listaDefault = new ArrayList<>();
+	private String itensListaDefault = "";
+ 
 	public String methodoCategory(Connection connection) {
 		String tableName = "category";
 		ResultSet resultSet;
@@ -25,7 +25,9 @@ public class MethodoCategory {
 			while (resultSet.next()) {
 				String columnName = resultSet.getString("COLUMN_NAME");
 				columnNames.add(columnName);
-				getDefaultList().add(defaultLists);
+				if (!columnName.equals("id") && !columnName.equals("name")) {
+					getDefaultList().add(itensListaDefault);
+				}
 				if (columnName.equals("kitchen_notes")) {
 					break;
 				}
@@ -52,10 +54,10 @@ public class MethodoCategory {
 	}
 
 	public List<String> getDefaultList() {
-		return defaultList;
+		return listaDefault;
 	}
 
 	public String getDefaultLists() {
-		return defaultLists;
+		return itensListaDefault;
 	}
 }

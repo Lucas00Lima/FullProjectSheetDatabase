@@ -3,6 +3,7 @@ package com.example.Product;
 import java.io.FileInputStream;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.util.List;
 
 import org.apache.poi.ss.usermodel.Cell;
@@ -54,7 +55,7 @@ public class QueryPadrao {
 
 			// Pegas as celulas de cada coluna
 			int rowIndex;
-			for (rowIndex = 1; rowIndex < sheet.getLastRowNum(); rowIndex++) {
+			for (rowIndex = 1; rowIndex <= sheet.getLastRowNum(); rowIndex++) {
 				Row row = sheet.getRow(rowIndex);
 				Cell codeCell = row.getCell(0);
 				Cell barcodeCell = row.getCell(1);
@@ -75,113 +76,128 @@ public class QueryPadrao {
 				Cell cofinscodCell = row.getCell(16);
 				Cell cofinsCell = row.getCell(17);
 
-
 				if (nameCell.getCellType() == CellType.BLANK && codeCell.getCellType() == CellType.BLANK) {
 					continue;
-				} else {
-				String codeValue = dataFormatter.formatCellValue(codeCell);
-				String barcodeValue = dataFormatter.formatCellValue(barcodeCell);
-				String nameValue = dataFormatter.formatCellValue(nameCell);
-				String descriptionValue = dataFormatter.formatCellValue(descriptionCell);
-
-				String typeValueString = dataFormatter.formatCellValue(typeCell); // Origem
-				int typeValue;
-				if (typeValueString == "") {
-					typeValue = 2;
-				} else {
-					typeValue = 1;
 				}
-				String type2ValueString = dataFormatter.formatCellValue(type2Cell); // Tipo
-				int type2Value = 0;
-				if (type2ValueString == "") {
-					type2Value = 1;
-				}
-				if (type2ValueString == "2") {
-					type2Value = 2;
-				}
-				String costValueString = dataFormatter.formatCellValue(costCell);
-				int costValue = 0;// = Integer.parseInt(costValueString);
-				if (costValueString.equals("")) {
-					costValue = 10;
-				}
-
-				String priceValueString = dataFormatter.formatCellValue(priceCell);
-				int priceValue = 0;
-				if (priceValueString.equals("")) {
-					priceValue = 5;
-				}
-
-				String ncmValue = dataFormatter.formatCellValue(ncmCell);
-				String cfopValue = dataFormatter.formatCellValue(cfopCell);
-				String cestValue = dataFormatter.formatCellValue(cestCell);
-				String cstValue = dataFormatter.formatCellValue(cstCell);
-
-				String icmsValueString = dataFormatter.formatCellValue(icmsCell);
-				int icmsValue = 0;
-				if (icmsValueString.equals("")) {
-					icmsValue = 10 * 1000;
-				}
-
-				String piscodeValue = dataFormatter.formatCellValue(piscodCell);
-				String pisValueString = dataFormatter.formatCellValue(pisCell);
-				int pisValue = 0;
-				if (pisValueString.equals("")) {
-					pisValue = 10;
-				}
-
-				String cofinscodValue = dataFormatter.formatCellValue(cofinscodCell);
-
-				String cofinsValueString = dataFormatter.formatCellValue(cofinsCell);
-				int cofinsValue = 0;
-				if (cofinsValueString.equals("")) {
-					cofinsValue = 5;
-				}
-
-				String currentStockValueString = dataFormatter.formatCellValue(currentStockCell);
-				int currentStockValue = 0;
-				if (currentStockValueString.equals("")) {
-					currentStockValue = 50;
-				}
-				if (codeValue != null && !codeValue.isEmpty()) {
-					queryCategory.queryCategory(connection,tableName,sheetAcess);
-					} else {
-						PreparedStatement preparedStatement = connection.prepareStatement(insertQuery);
-						preparedStatement.setString(1, codeValue);
-						preparedStatement.setString(2, barcodeValue);
-						preparedStatement.setString(3, nameValue);
-						preparedStatement.setString(4, descriptionValue);
-						preparedStatement.setInt(5, typeValue);
-						preparedStatement.setInt(6, type2Value);
-						preparedStatement.setInt(7, costValue);
-						preparedStatement.setInt(8, priceValue);
-
-						preparedStatement.setString(9, ncmValue);
-						preparedStatement.setString(10, cfopValue);
-						preparedStatement.setString(11, cestValue);
-						preparedStatement.setString(12, cstValue);
-						preparedStatement.setInt(13, icmsValue);
-						preparedStatement.setString(14, piscodeValue);
-						preparedStatement.setInt(15, pisValue);
-						preparedStatement.setString(16, cofinscodValue);
-						preparedStatement.setInt(17, cofinsValue);
-						preparedStatement.setInt(18, currentStockValue);
-						for (int j = 0; j < defaultValues.size(); j++) {
-							String value = defaultValues.get(j);
-							if (value.isEmpty()) {
-								preparedStatement.setInt(j + 19, 0);
-							} else {
-								preparedStatement.setString(j + 19, value);
-							}
-						}
-						preparedStatement.execute();
-						linhasInseridas = getLinhasInseridas() + 1;
+				if (codeCell != null && codeCell.getCellType() != CellType.BLANK) {
+					String codeValue = dataFormatter.formatCellValue(codeCell);
+					if (!checkIfCodeExists(connection, codeValue)) {
+						queryCategory.queryCategory(connection, sheetAcess);
 					}
+				} else {
+					String codeValue = dataFormatter.formatCellValue(codeCell);
+					String barcodeValue = dataFormatter.formatCellValue(barcodeCell);
+					String nameValue = dataFormatter.formatCellValue(nameCell);
+					String descriptionValue = dataFormatter.formatCellValue(descriptionCell);
+
+					String typeValueString = dataFormatter.formatCellValue(typeCell); // Origem
+					int typeValue;
+					if (typeValueString == "") {
+						typeValue = 2;
+					} else {
+						typeValue = 1;
+					}
+					String type2ValueString = dataFormatter.formatCellValue(type2Cell); // Tipo
+					int type2Value = 0;
+					if (type2ValueString == "") {
+						type2Value = 1;
+					}
+					if (type2ValueString == "2") {
+						type2Value = 2;
+					}
+					String costValueString = dataFormatter.formatCellValue(costCell);
+					int costValue = 0;// = Integer.parseInt(costValueString);
+					if (costValueString.equals("")) {
+						costValue = 10;
+					}
+
+					String priceValueString = dataFormatter.formatCellValue(priceCell);
+					int priceValue = 0;
+					if (priceValueString.equals("")) {
+						priceValue = 5;
+					}
+
+					String ncmValue = dataFormatter.formatCellValue(ncmCell);
+					String cfopValue = dataFormatter.formatCellValue(cfopCell);
+					String cestValue = dataFormatter.formatCellValue(cestCell);
+					String cstValue = dataFormatter.formatCellValue(cstCell);
+
+					String icmsValueString = dataFormatter.formatCellValue(icmsCell);
+					int icmsValue = 0;
+					if (icmsValueString.equals("")) {
+						icmsValue = 10 * 1000;
+					}
+
+					String piscodeValue = dataFormatter.formatCellValue(piscodCell);
+					String pisValueString = dataFormatter.formatCellValue(pisCell);
+					int pisValue = 0;
+					if (pisValueString.equals("")) {
+						pisValue = 10;
+					}
+
+					String cofinscodValue = dataFormatter.formatCellValue(cofinscodCell);
+
+					String cofinsValueString = dataFormatter.formatCellValue(cofinsCell);
+					int cofinsValue = 0;
+					if (cofinsValueString.equals("")) {
+						cofinsValue = 5;
+					}
+
+					String currentStockValueString = dataFormatter.formatCellValue(currentStockCell);
+					int currentStockValue = 0;
+					if (currentStockValueString.equals("")) {
+						currentStockValue = 50;
+					}
+
+					PreparedStatement preparedStatement = connection.prepareStatement(insertQuery);
+					preparedStatement.setString(1, codeValue);
+					preparedStatement.setString(2, barcodeValue);
+					preparedStatement.setString(3, nameValue);
+					preparedStatement.setString(4, descriptionValue);
+					preparedStatement.setInt(5, typeValue);
+					preparedStatement.setInt(6, type2Value);
+					preparedStatement.setInt(7, costValue);
+					preparedStatement.setInt(8, priceValue);
+
+					preparedStatement.setString(9, ncmValue);
+					preparedStatement.setString(10, cfopValue);
+					preparedStatement.setString(11, cestValue);
+					preparedStatement.setString(12, cstValue);
+					preparedStatement.setInt(13, icmsValue);
+					preparedStatement.setString(14, piscodeValue);
+					preparedStatement.setInt(15, pisValue);
+					preparedStatement.setString(16, cofinscodValue);
+					preparedStatement.setInt(17, cofinsValue);
+					preparedStatement.setInt(18, currentStockValue);
+					for (int j = 0; j < defaultValues.size(); j++) {
+						String value = defaultValues.get(j);
+						if (value.isEmpty()) {
+							preparedStatement.setInt(j + 19, 0);
+						} else {
+							preparedStatement.setString(j + 19, value);
+						}
+					}
+					preparedStatement.execute();
+					linhasInseridas = getLinhasInseridas() + 1;
 				}
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
+	
+    private boolean checkIfCodeExists(Connection connection, String codeValue) throws Exception {
+    	String tableNameCategory = "category";
+        String query = "SELECT COUNT(*) FROM " + tableNameCategory + " WHERE id = ?";
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setString(1, codeValue);
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                resultSet.next();
+                int count = resultSet.getInt(1);
+                return count > 0;
+            }
+        }
+    }
 
 	public int getLinhasInseridas() {
 		return linhasInseridas;

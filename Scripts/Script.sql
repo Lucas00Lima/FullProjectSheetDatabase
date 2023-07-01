@@ -1,7 +1,7 @@
 use db000;
 describe product;
 truncate client;
-truncate product;
+truncate category;
 select * from product;
 select * from category;
 describe category;
