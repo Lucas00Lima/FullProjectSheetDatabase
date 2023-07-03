@@ -35,7 +35,6 @@ public class QueryCategory {
 				String categoryIdValue = dataFormatter.formatCellValue(categoryId);
 				String categoryNameValue = dataFormatter.formatCellValue(categoryName);
 				String categorySubTypeValue = dataFormatter.formatCellValue(categorySubType);
-				System.out.println(categorySubTypeValue);
 				if (categorySubTypeValue.equals("")) {
 					categorySubTypeValue = "1";}
 				MethodoCategory methodoCategory = new MethodoCategory();
@@ -60,7 +59,6 @@ public class QueryCategory {
 				categoryStatement.setString(16, "");
 
 				panel_position++;
-				System.out.println(categoryStatement);
 				categoryStatement.execute();
 			}
 		}

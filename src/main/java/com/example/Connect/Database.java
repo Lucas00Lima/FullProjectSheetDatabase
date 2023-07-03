@@ -22,10 +22,10 @@ public class Database {
 		db = "db000"; //JOptionPane.showInputDialog("Nome do banco a qual deseja acessar"); //
 		url = "jdbc:mysql://localhost:3306/" + db;
 		String[] optionTable = {"Produtos", "Clientes"};
-		table = JOptionPane.showOptionDialog(null, "Qual tabela deseja utilizar", "Tabela", JOptionPane.OK_OPTION, JOptionPane.INFORMATION_MESSAGE, null, optionTable,null);
+		table = 0;//JOptionPane.showOptionDialog(null, "Qual tabela deseja utilizar", "Tabela", JOptionPane.OK_OPTION, JOptionPane.INFORMATION_MESSAGE, null, optionTable,null);
 		if (table == 0) {
 			String[] optionProduct = {"Query Padrão", "Query Especializada"};
-			tableProduct = JOptionPane.showOptionDialog(null, "Qual query de Product deseja utilizar", "Query Desejada", JOptionPane.OK_OPTION, JOptionPane.INFORMATION_MESSAGE, null, optionProduct,null);
+			tableProduct = 0;//JOptionPane.showOptionDialog(null, "Qual query de Product deseja utilizar", "Query Desejada", JOptionPane.OK_OPTION, JOptionPane.INFORMATION_MESSAGE, null, optionProduct,null);
 			if (tableProduct == 0) {
 				tableName = "product";
 				JOptionPane.showMessageDialog(null, "Você selecionou a tabela PRODUCT " + "e a QUERY PADRÃO");

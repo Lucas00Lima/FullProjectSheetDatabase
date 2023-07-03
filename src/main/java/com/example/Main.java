@@ -36,10 +36,14 @@ public class Main {
 			product.methodoProduct(connection, tableName);
 			if (tableProduct == 0) {
 				System.out.println("Query Padrão");
-				QueryPadrao queryPadrao = new QueryPadrao();
-				queryPadrao.queryPadrao(connection, tableName, sheetAcess);
 				MethodoCategory methodoCategory = new MethodoCategory();
 				methodoCategory.methodoCategory(connection);
+				QueryPadrao queryPadrao = new QueryPadrao();
+				queryPadrao.queryPadrao(connection, tableName, sheetAcess);
+				QueryAddPadraoProduct queryAddPadraoProduct = new QueryAddPadraoProduct();
+				queryAddPadraoProduct.queryAddPadraoProduct(connection, tableName);
+
+				
 			} else {
 				System.out.println("Query Especializada");
 				QueryProduct queryProduct = new QueryProduct();
