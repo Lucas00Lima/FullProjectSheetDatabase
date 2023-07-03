@@ -67,7 +67,9 @@ public class MethodoProduct {
 	}
 
 	private String[] getColumnProduct() {
-		String[] columnProduct = { "category_id" , "barcode" , "name", "description" , "type" , "type2" , "cost" , "price" , "ncm" , "cfop" , "tax4_code" , "tax1_code" , "tax1" , "tax2_code" , "tax2" , "tax3_code" , "tax3" , "current_stock" ,  "internal_code"};
+		String[] columnProduct = { "category_id" , "barcode" , "name", "description" , "type" , "type2" , "cost" , 
+				"price" , "ncm" , "cfop" , "tax4_code" , "tax1_code" , "tax1" , "tax2_code" , "tax2" , "tax3_code" , "tax3" , "current_stock" , "internal_code"
+				, "id"};
 		return columnProduct;
 	}
 

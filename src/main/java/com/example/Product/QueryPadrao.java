@@ -58,9 +58,10 @@ public class QueryPadrao {
 
 			// Pegas as celulas de cada coluna
 			String codeValue = "";
-//			int internal_code = 0 * 10;
+			String previousCodeValue = "";
 			int internal_codeAdd = 0;
 			int rowIndex;
+			int counter = 0;
 			for (rowIndex = 1; rowIndex <= sheet.getLastRowNum(); rowIndex++) {
 				Row row = sheet.getRow(rowIndex);
 				Cell codeCell = row.getCell(0);
@@ -146,7 +147,13 @@ public class QueryPadrao {
 						queryCategory.queryCategory(connection, sheetAcess);
 					}
 				}else {
-					int internalcode = Integer.parseInt(codeValue);
+					int internalcode = Integer.parseInt(codeValue) * 100;
+					if (!codeValue.equals(previousCodeValue)) {
+						internal_codeAdd = 0;
+						counter = 0;
+					}
+
+
 					PreparedStatement preparedStatement = connection.prepareStatement(insertQuery);
 					preparedStatement.setString(1, codeValue); //category_id
 					preparedStatement.setString(2, barcodeValue);
@@ -167,17 +174,20 @@ public class QueryPadrao {
 					preparedStatement.setString(16, cofinscodValue);
 					preparedStatement.setInt(17, cofinsValue);
 					preparedStatement.setInt(18, currentStockValue);
-					preparedStatement.setInt(19, internalcode * 10 + internal_codeAdd); //Internal_Code
+					preparedStatement.setInt(19, internalcode + internal_codeAdd); //Internal_Code
+					preparedStatement.setInt(20, internalcode + internal_codeAdd);
 					for (int j = 0; j < defaultValues.size(); j++) {
 						String value = defaultValues.get(j);
 						if (value.isEmpty()) {
-							preparedStatement.setInt(j + 20, 0);
+							preparedStatement.setInt(j + 21, 0);
 						} else {
-							preparedStatement.setString(j + 20, value);
+							preparedStatement.setString(j + 21, value);
 						}
 					}
 					preparedStatement.execute();
+					counter++;
 					internal_codeAdd++;
+					previousCodeValue = codeValue;
 					linhasInseridas = getLinhasInseridas() + 1;
 				}
 			}
