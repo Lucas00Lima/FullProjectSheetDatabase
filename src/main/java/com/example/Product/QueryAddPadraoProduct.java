@@ -20,6 +20,7 @@ public class QueryAddPadraoProduct {
 			addStatement.addBatch(update + tableName + " SET hall_table = 1 ");
 			addStatement.addBatch(update + tableName + " SET balcony  = 1 ");
 			addStatement.addBatch(update + tableName + " SET parameters  = '' ");
+			addStatement.addBatch(update + tableName + " SET departament_id = 1 ");
 			addStatement.execute();
 			addStatement.executeBatch();
 			System.out.println("Query padrão executada");

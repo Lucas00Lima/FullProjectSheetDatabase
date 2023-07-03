@@ -73,16 +73,16 @@ public class QueryPadrao {
 				Cell type2Cell = row.getCell(5); // Tipo
 				Cell costCell = row.getCell(6);
 				Cell priceCell = row.getCell(7);
-				Cell currentStockCell = row.getCell(8);
-				Cell ncmCell = row.getCell(9);
-				Cell cfopCell = row.getCell(10);
-				Cell cestCell = row.getCell(11);
-				Cell cstCell = row.getCell(12);
-				Cell icmsCell = row.getCell(13);
-				Cell piscodCell = row.getCell(14);
-				Cell pisCell = row.getCell(15);
-				Cell cofinscodCell = row.getCell(16);
-				Cell cofinsCell = row.getCell(17);
+				Cell ncmCell = row.getCell(8);
+				Cell cfopCell = row.getCell(9);
+				Cell cestCell = row.getCell(10);
+				Cell cstCell = row.getCell(11);
+				Cell icmsCell = row.getCell(12);
+				Cell piscodCell = row.getCell(13);
+				Cell pisCell = row.getCell(14);
+				Cell cofinscodCell = row.getCell(15);
+				Cell cofinsCell = row.getCell(16);
+				Cell currentStockCell = row.getCell(17);
 
 				String barcodeValue = dataFormatter.formatCellValue(barcodeCell);
 				String nameValue = dataFormatter.formatCellValue(nameCell);
@@ -90,27 +90,34 @@ public class QueryPadrao {
 				String typeValueString = dataFormatter.formatCellValue(typeCell); // Origem
 				int typeValue;
 				if (typeValueString == "") {
-					typeValue = 2;
-				} else {
 					typeValue = 1;
+				} else {
+					typeValue = 2;
 				}
 				String type2ValueString = dataFormatter.formatCellValue(type2Cell); // Tipo
 				int type2Value = 0;
 				if (type2ValueString == "") {
+					type2Value = 0;
+				}
+				if (type2ValueString == "1") {
 					type2Value = 1;
 				}
 				if (type2ValueString == "2") {
 					type2Value = 2;
 				}
 				String costValueString = dataFormatter.formatCellValue(costCell);
-				int costValue = 0;// = Integer.parseInt(costValueString);
+				int costValue = 0;
 				if (costValueString.equals("")) {
-					costValue = 10;
+					costValue = 0;
+				} else {
+					costValue = Integer.parseInt(costValueString) * 100;
 				}
 				String priceValueString = dataFormatter.formatCellValue(priceCell);
 				int priceValue = 0;
 				if (priceValueString.equals("")) {
-					priceValue = 5;
+					priceValue = 0;
+				} else {
+					priceValue = Integer.parseInt(priceValueString);
 				}
 				String ncmValue = dataFormatter.formatCellValue(ncmCell);
 				String cfopValue = dataFormatter.formatCellValue(cfopCell);
