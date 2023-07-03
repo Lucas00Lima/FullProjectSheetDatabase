@@ -10,7 +10,8 @@ public class QueryAddPadraoProduct {
 	public void queryAddPadraoProduct(Connection connection, String tableName) throws SQLException {
 		String update = "UPDATE ";
 		try {
-			PreparedStatement addStatement = connection.prepareStatement(update + tableName + " SET measure_unit = 'u'");
+			PreparedStatement addStatement = connection
+					.prepareStatement(update + tableName + " SET measure_unit = 'u'");
 			addStatement.addBatch(update + tableName + " SET print_production = 1 ");
 			addStatement.addBatch(update + tableName + " SET panel = 1 ");
 			addStatement.addBatch(update + tableName + " SET active = 1 ");
@@ -19,7 +20,6 @@ public class QueryAddPadraoProduct {
 			addStatement.addBatch(update + tableName + " SET hall_table = 1 ");
 			addStatement.addBatch(update + tableName + " SET balcony  = 1 ");
 			addStatement.addBatch(update + tableName + " SET parameters  = '' ");
-//			addStatement.addBatch(update + tableName + " SET id = internal_code ");
 			addStatement.execute();
 			addStatement.executeBatch();
 			System.out.println("Query padrão executada");

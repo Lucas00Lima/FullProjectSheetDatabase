@@ -19,7 +19,7 @@ public class MethodoClient {
 	private String defaultValue = "";
 	private Set<String> columnNames = new HashSet<String>();
 
-	public String methodoClient(Connection connection, int tableName) throws SQLException {
+	public String methodoClient(Connection connection, String tableName) throws SQLException {
 		if (tableName == 1) {
 			try {
 				String table = "client";

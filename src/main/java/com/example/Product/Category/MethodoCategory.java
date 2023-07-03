@@ -1,4 +1,4 @@
-package com.example.Product;
+package com.example.Product.Category;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

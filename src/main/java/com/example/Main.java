@@ -16,9 +16,9 @@ import com.example.Connect.SheetAcess;
 import com.example.Product.MethodoProduct;
 import com.example.Product.QueryAddPadraoProduct;
 import com.example.Product.QueryAddProduct;
-import com.example.Product.MethodoCategory;
 import com.example.Product.QueryPadrao;
 import com.example.Product.QueryProduct;
+import com.example.Product.Category.MethodoCategory;
 
 public class Main {
 	public static void main(String[] args) throws SQLException, EncryptedDocumentException, IOException {
@@ -43,7 +43,7 @@ public class Main {
 				QueryAddPadraoProduct queryAddPadraoProduct = new QueryAddPadraoProduct();
 				queryAddPadraoProduct.queryAddPadraoProduct(connection, tableName);
 
-				
+
 			} else {
 				System.out.println("Query Especializada");
 				QueryProduct queryProduct = new QueryProduct();
@@ -55,17 +55,17 @@ public class Main {
 				System.out.println("Affectd " + queryProduct.getLinhasInseridas());
 			}
 		} else {
-//			System.out.println("Tabela Client");
-//			System.out.println("Rodando a Query de Client");
-//			MethodoClient methodoClient = new MethodoClient();
-//			methodoClient.methodoClient(connection, tableName);
-//			QueryClient queryClient = new QueryClient();
-//			queryClient.queryClient(connection, tableName, sheetAcess);
-//			QueryAddClient queryAddClient = new QueryAddClient();
-//			queryAddClient.queryAddClient(connection, tableName, sheetAcess);
-//			connection.close();
-//			int linhasInseridas = queryClient.getLinhasInseridas();
-//			System.out.println("Affected = " + linhasInseridas);
+			System.out.println("Tabela Client");
+			System.out.println("Rodando a Query de Client");
+			MethodoClient methodoClient = new MethodoClient();
+			methodoClient.methodoClient(connection, tableName, sheetAcess);
+			QueryClient queryClient = new QueryClient();
+			queryClient.queryClient(connection, tableName, sheetAcess);
+			QueryAddClient queryAddClient = new QueryAddClient();
+			queryAddClient.queryAddClient(connection, tableName, sheetAcess);
+			connection.close();
+			int linhasInseridas = queryClient.getLinhasInseridas();
+			System.out.println("Affected = " + linhasInseridas);
 		}
 	}
 }

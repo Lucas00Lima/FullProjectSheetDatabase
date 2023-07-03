@@ -17,15 +17,17 @@ public class Database {
 	private int table;
 
 	public Connection connectionDatabase() throws SQLException {
-		username = "root"; //JOptionPane.showInputDialog("Nome do usuario do banco de dados");
-		password =  "@soma+"; //JOptionPane.showInputDialog("Insira a senha do banco de dados"); //
-		db = "db000"; //JOptionPane.showInputDialog("Nome do banco a qual deseja acessar"); //
+		username = JOptionPane.showInputDialog("Nome do usuario do banco de dados");
+		password = JOptionPane.showInputDialog("Insira a senha do banco de dados");
+		db = JOptionPane.showInputDialog("Nome do banco a qual deseja acessar");
 		url = "jdbc:mysql://localhost:3306/" + db;
-		String[] optionTable = {"Produtos", "Clientes"};
-		table = 0;//JOptionPane.showOptionDialog(null, "Qual tabela deseja utilizar", "Tabela", JOptionPane.OK_OPTION, JOptionPane.INFORMATION_MESSAGE, null, optionTable,null);
+		String[] optionTable = { "Produtos", "Clientes" };
+		table = JOptionPane.showOptionDialog(null, "Qual tabela deseja utilizar", "Tabela", JOptionPane.OK_OPTION,
+				JOptionPane.INFORMATION_MESSAGE, null, optionTable, null);
 		if (table == 0) {
-			String[] optionProduct = {"Query Padrão", "Query Especializada"};
-			tableProduct = 0;//JOptionPane.showOptionDialog(null, "Qual query de Product deseja utilizar", "Query Desejada", JOptionPane.OK_OPTION, JOptionPane.INFORMATION_MESSAGE, null, optionProduct,null);
+			String[] optionProduct = { "Query Padrão", "Query Especializada" };
+			tableProduct = JOptionPane.showOptionDialog(null, "Qual query de Product deseja utilizar", "Query Desejada",
+					JOptionPane.OK_OPTION, JOptionPane.INFORMATION_MESSAGE, null, optionProduct, null);
 			if (tableProduct == 0) {
 				tableName = "product";
 				JOptionPane.showMessageDialog(null, "Você selecionou a tabela PRODUCT " + "e a QUERY PADRÃO");
@@ -37,27 +39,33 @@ public class Database {
 			tableName = "client";
 			JOptionPane.showMessageDialog(null, "Você selecionou a tabela CLIENT");
 		}
-		return DriverManager.getConnection(url,username,password);
+		return DriverManager.getConnection(url, username, password);
 	}
 
 	public String getUsername() {
 		return username;
 	}
+
 	public String getPassword() {
 		return password;
 	}
+
 	public String getDb() {
 		return db;
 	}
+
 	public String getUrl() {
 		return url;
 	}
+
 	public String getTableName() {
 		return tableName;
 	}
+
 	public int getTableProduct() {
 		return tableProduct;
 	}
+
 	public int getTable() {
 		return table;
 	}

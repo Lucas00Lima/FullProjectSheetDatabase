@@ -14,6 +14,8 @@ import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
 
+import com.example.Product.Category.QueryCategory;
+
 import java_cup.internal_error;
 //print_production = 1 para imprimir a comanda de produção
 
@@ -54,7 +56,6 @@ public class QueryPadrao {
 			DataFormatter dataFormatter = new DataFormatter();
 			List<String> defaultValues = methodo.getDefaultValues();
 			QueryCategory queryCategory = new QueryCategory();
-			String categoryIdValue;
 
 			// Pegas as celulas de cada coluna
 			String codeValue = "";
@@ -137,7 +138,6 @@ public class QueryPadrao {
 				if (currentStockValueString.equals("")) {
 					currentStockValue = 50;
 				}
-
 				if (nameCell.getCellType() == CellType.BLANK && codeCell.getCellType() == CellType.BLANK) {
 					continue;
 				}
@@ -146,16 +146,14 @@ public class QueryPadrao {
 					if (!checkIfCodeExists(connection, codeValue)) {
 						queryCategory.queryCategory(connection, sheetAcess);
 					}
-				}else {
+				} else {
 					int internalcode = Integer.parseInt(codeValue) * 100;
 					if (!codeValue.equals(previousCodeValue)) {
 						internal_codeAdd = 0;
 						counter = 0;
 					}
-
-
 					PreparedStatement preparedStatement = connection.prepareStatement(insertQuery);
-					preparedStatement.setString(1, codeValue); //category_id
+					preparedStatement.setString(1, codeValue); // category_id
 					preparedStatement.setString(2, barcodeValue);
 					preparedStatement.setString(3, nameValue);
 					preparedStatement.setString(4, descriptionValue);
@@ -174,7 +172,7 @@ public class QueryPadrao {
 					preparedStatement.setString(16, cofinscodValue);
 					preparedStatement.setInt(17, cofinsValue);
 					preparedStatement.setInt(18, currentStockValue);
-					preparedStatement.setInt(19, internalcode + internal_codeAdd); //Internal_Code
+					preparedStatement.setInt(19, internalcode + internal_codeAdd); // Internal_Code
 					preparedStatement.setInt(20, internalcode + internal_codeAdd);
 					for (int j = 0; j < defaultValues.size(); j++) {
 						String value = defaultValues.get(j);

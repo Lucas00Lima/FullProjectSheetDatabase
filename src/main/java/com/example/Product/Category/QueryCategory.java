@@ -1,4 +1,4 @@
-package com.example.Product;
+package com.example.Product.Category;
 
 import java.io.FileInputStream;
 import java.io.IOException;
