@@ -22,47 +22,46 @@ import com.example.Product.QueryProduct;
 
 public class Main {
 	public static void main(String[] args) throws SQLException, EncryptedDocumentException, IOException {
-		// Acessa o banco e a planilha
 		Database database = new Database();
 		Connection connection = database.connectionDatabase();
+		int table = database.getTable();
+		int tableProduct = database.getTableProduct();
 		String tableName = database.getTableName();
 		SheetAcess sheet = new SheetAcess();
 		String sheetAcess = sheet.acessSheet();
 
-		if (tableName.equals("product")) {
-			System.out.println("Rodando a Query de Product");
+		if (table == 0) {
+			System.out.println("Tabela Product");
 			MethodoProduct product = new MethodoProduct();
 			product.methodoProduct(connection, tableName);
-			
-			QueryPadrao queryPadrao = new QueryPadrao();
-			queryPadrao.queryPadrao(connection, tableName, sheetAcess);
-			
-			MethodoCategory methodoCategory = new MethodoCategory();
-			methodoCategory.methodoCategory(connection);
-			
-			
-//			QueryProduct queryProduct = new QueryProduct();
-//			queryProduct.query(connection, tableName);
-			
-//			QueryAddProduct queryAddProduct = new QueryAddProduct();
-//			queryAddProduct.queryAdd(connection, tableName);
-
-//			QueryAddPadraoProduct query = new QueryAddPadraoProduct();
-//			query.queryAddPadraoProduct(connection,tableName);
-			
-//			System.out.println("Affectd " + queryPadrao.getLinhasInseridas());
-
+			if (tableProduct == 0) {
+				System.out.println("Query Padrão");
+				QueryPadrao queryPadrao = new QueryPadrao();
+				queryPadrao.queryPadrao(connection, tableName, sheetAcess);
+				MethodoCategory methodoCategory = new MethodoCategory();
+				methodoCategory.methodoCategory(connection);
+			} else {
+				System.out.println("Query Especializada");
+				QueryProduct queryProduct = new QueryProduct();
+				queryProduct.query(connection, tableName);
+				QueryAddProduct queryAddProduct = new QueryAddProduct();
+				queryAddProduct.queryAdd(connection, tableName);
+				QueryAddPadraoProduct query = new QueryAddPadraoProduct();
+				query.queryAddPadraoProduct(connection,tableName);
+				System.out.println("Affectd " + queryProduct.getLinhasInseridas());
+			}
 		} else {
-			System.out.println("Rodando a Query de Client");
-			MethodoClient methodoClient = new MethodoClient();
+//			System.out.println("Tabela Client");
+//			System.out.println("Rodando a Query de Client");
+//			MethodoClient methodoClient = new MethodoClient();
 //			methodoClient.methodoClient(connection, tableName);
-			QueryClient queryClient = new QueryClient();
+//			QueryClient queryClient = new QueryClient();
 //			queryClient.queryClient(connection, tableName, sheetAcess);
 //			QueryAddClient queryAddClient = new QueryAddClient();
 //			queryAddClient.queryAddClient(connection, tableName, sheetAcess);
-			connection.close();
-			int linhasInseridas = queryClient.getLinhasInseridas();
-			System.out.println("Affected = " + linhasInseridas);
+//			connection.close();
+//			int linhasInseridas = queryClient.getLinhasInseridas();
+//			System.out.println("Affected = " + linhasInseridas);
 		}
 	}
 }

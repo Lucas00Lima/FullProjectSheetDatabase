@@ -12,16 +12,27 @@ public class Database {
 	private String db;
 	private String url;
 	private String tableName;
+//	private int tableProductSelect;
+	private int tableProduct;
+	private int table;
+
 	public Connection connectionDatabase() throws SQLException {
 		username = "root"; //JOptionPane.showInputDialog("Nome do usuario do banco de dados");
 		password =  "@soma+"; //JOptionPane.showInputDialog("Insira a senha do banco de dados"); //
 		db = "db000"; //JOptionPane.showInputDialog("Nome do banco a qual deseja acessar"); //
 		url = "jdbc:mysql://localhost:3306/" + db;
-		String[] optionTable = {"Product", "Client"};
-		int table = 0; // JOptionPane.showOptionDialog(null, "Qual tabela deseja utilizar", "Tabela", JOptionPane.OK_OPTION, JOptionPane.INFORMATION_MESSAGE, null, optionTable,null);
+		String[] optionTable = {"Produtos", "Clientes"};
+		table = JOptionPane.showOptionDialog(null, "Qual tabela deseja utilizar", "Tabela", JOptionPane.OK_OPTION, JOptionPane.INFORMATION_MESSAGE, null, optionTable,null);
 		if (table == 0) {
-			tableName = "product";
-			JOptionPane.showMessageDialog(null, "Você selecionou a tabela PRODUCT");
+			String[] optionProduct = {"Query Padrão", "Query Especializada"};
+			tableProduct = JOptionPane.showOptionDialog(null, "Qual query de Product deseja utilizar", "Query Desejada", JOptionPane.OK_OPTION, JOptionPane.INFORMATION_MESSAGE, null, optionProduct,null);
+			if (tableProduct == 0) {
+				tableName = "product";
+				JOptionPane.showMessageDialog(null, "Você selecionou a tabela PRODUCT " + "e a QUERY PADRÃO");
+			} else {
+				tableName = "product";
+				JOptionPane.showMessageDialog(null, "Você escolheu a tabela PRODUCT " + "e a QUERY ESPECIALIZADA");
+			}
 		} else {
 			tableName = "client";
 			JOptionPane.showMessageDialog(null, "Você selecionou a tabela CLIENT");
@@ -43,5 +54,11 @@ public class Database {
 	}
 	public String getTableName() {
 		return tableName;
+	}
+	public int getTableProduct() {
+		return tableProduct;
+	}
+	public int getTable() {
+		return table;
 	}
 }

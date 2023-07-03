@@ -21,9 +21,7 @@ public class SheetAcess {
 //		}
 //		return filePath;
 	}
+	public String getFilePath() {
+		return filePath;
+	}
 }
-//	public String getFilePath() {
-//		return filePath;
-//	}
-
-//}
