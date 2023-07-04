@@ -44,7 +44,6 @@ public class Main {
 				QueryAddPadraoProduct queryAddPadraoProduct = new QueryAddPadraoProduct();
 				queryAddPadraoProduct.queryAddPadraoProduct(connection, tableName);
 
-
 			} else {
 				System.out.println("Query Especializada");
 				QueryProduct queryProduct = new QueryProduct();
@@ -52,21 +51,21 @@ public class Main {
 				QueryAddProduct queryAddProduct = new QueryAddProduct();
 				queryAddProduct.queryAdd(connection, tableName);
 				QueryAddPadraoProduct query = new QueryAddPadraoProduct();
-				query.queryAddPadraoProduct(connection,tableName);
+				query.queryAddPadraoProduct(connection, tableName);
 				System.out.println("Affectd " + queryProduct.getLinhasInseridas());
 			}
 		} else {
-//			System.out.println("Tabela Client");
-//			System.out.println("Rodando a Query de Client");
-//			MethodoClient methodoClient = new MethodoClient();
-//			methodoClient.methodoClient(connection, tableName, sheetAcess);
-//			QueryClient queryClient = new QueryClient();
-//			queryClient.queryClient(connection, tableName, sheetAcess);
-//			QueryAddClient queryAddClient = new QueryAddClient();
-//			queryAddClient.queryAddClient(connection, tableName, sheetAcess);
-//			connection.close();
-//			int linhasInseridas = queryClient.getLinhasInseridas();
-//			System.out.println("Affected = " + linhasInseridas);
+			System.out.println("Tabela Client");
+			System.out.println("Rodando a Query de Client");
+			MethodoClient methodoClient = new MethodoClient();
+			methodoClient.methodoClient(connection, tableName);
+			QueryClient queryClient = new QueryClient();
+			queryClient.queryClient(connection, tableName, sheetAcess);
+			QueryAddClient queryAddClient = new QueryAddClient();
+			queryAddClient.queryAddClient(connection, tableName, sheetAcess);
+			connection.close();
+			int linhasInseridas = queryClient.getLinhasInseridas();
+			System.out.println("Affected = " + linhasInseridas);
 		}
 		QueryWaiter queryWaiter = new QueryWaiter();
 		queryWaiter.queryWaiter(connection);

@@ -20,13 +20,11 @@ public class MethodoClient {
 	private Set<String> columnNames = new HashSet<String>();
 
 	public String methodoClient(Connection connection, String tableName) throws SQLException {
-		if (tableName == 1) {
 			try {
-				String table = "client";
 				DatabaseMetaData metaData = (DatabaseMetaData) connection.getMetaData();
-				ResultSet resultSet = metaData.getColumns(null, null, table, null);
+				ResultSet resultSet = metaData.getColumns(null, null, tableName, null);
 				String[] excludedColumns = getColumnCliente();
-				insertQuery.append("INSERT INTO ").append(table).append(" (");
+				insertQuery.append("INSERT INTO ").append(tableName).append(" (");
 				for (int i = 0; i < excludedColumns.length; i++) {
 					insertQuery.append(excludedColumns[i]);
 					if (i < excludedColumns.length - 1) {
@@ -62,7 +60,6 @@ public class MethodoClient {
 			} catch (Error e) {
 				throw new RuntimeErrorException(e);
 			}
-		}
 		return insertQuery.toString();
 	}
 

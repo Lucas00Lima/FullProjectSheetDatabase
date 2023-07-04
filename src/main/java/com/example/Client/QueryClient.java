@@ -24,9 +24,8 @@ import com.ibm.icu.text.SimpleDateFormat;
 public class QueryClient {
 	private int linhasInseridas;
 
-	public void queryClient(Connection connection, int tableName, String sheetAcess)
+	public void queryClient(Connection connection, String tableName, String sheetAcess)
 			throws SQLException, EncryptedDocumentException, IOException {
-		if (tableName == 1) {
 			MethodoClient methodo = new MethodoClient();
 			String insertQuery = methodo.methodoClient(connection, tableName);
 			List<String> defaultValues = methodo.getDefaultValues();
@@ -132,8 +131,6 @@ public class QueryClient {
 				e.printStackTrace();
 			}
 		}
-
-	}
 
 	public int getLinhasInseridas() {
 		return linhasInseridas;
