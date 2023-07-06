@@ -9,6 +9,9 @@ import com.example.Connect.Database;
 public class QueryAddPadraoProduct {
 	public void queryAddPadraoProduct(Connection connection, String tableName) throws SQLException {
 		String update = "UPDATE ";
+		QueryPadrao query = new QueryPadrao();
+		int idCategory = query.inserIdCategory(connection) + 1;
+		int idProduct = query.inserIdProduct(connection) + 1;
 		try {
 			PreparedStatement addStatement = connection
 					.prepareStatement(update + tableName + " SET measure_unit = 'u'");
@@ -21,19 +24,14 @@ public class QueryAddPadraoProduct {
 			addStatement.addBatch(update + tableName + " SET balcony  = 1 ");
 			addStatement.addBatch(update + tableName + " SET parameters  = '' ");
 			addStatement.addBatch(update + tableName + " SET department_id = 1 ");
+			addStatement.addBatch(update + "next_id SET category_id = " + idCategory );
+			addStatement.addBatch(update + "next_id SET product_id = " + idProduct );
 			addStatement.execute();
 			addStatement.executeBatch();
-			System.out.println("Query padrão executada");
+			System.out.println("Query Add Executada");
 
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-//	}
-//	public void queryVinculadoCodigo(Connection connection, String tableName) {
-//		try {
-//			PreparedStatement insertVincular = connection.prepareStatement("INSERT INTO product (name,internal_code,department_id,type,brand_id,category_id,)")
-//		} catch (SQLException e) {
-//			e.printStackTrace();
-//		}
 	}
 }

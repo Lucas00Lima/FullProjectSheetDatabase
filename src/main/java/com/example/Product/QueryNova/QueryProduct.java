@@ -1,4 +1,4 @@
-package com.example.Product;
+package com.example.Product.QueryNova;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -19,6 +19,7 @@ import org.apache.poi.ss.usermodel.WorkbookFactory;
 
 import com.example.Connect.Database;
 import com.example.Connect.SheetAcess;
+import com.example.Product.MethodoProduct;
 
 public class QueryProduct {
 	private int linhasInseridas;

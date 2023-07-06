@@ -1,4 +1,4 @@
-package com.example.Product;
+package com.example.Product.QueryNova;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

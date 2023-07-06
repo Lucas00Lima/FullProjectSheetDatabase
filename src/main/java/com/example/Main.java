@@ -13,11 +13,11 @@ import com.example.Connect.Database;
 import com.example.Connect.SheetAcess;
 import com.example.Product.MethodoProduct;
 import com.example.Product.QueryAddPadraoProduct;
-import com.example.Product.QueryAddProduct;
 import com.example.Product.QueryPadrao;
-import com.example.Product.QueryProduct;
 import com.example.Product.Category.MethodoCategory;
 import com.example.Product.Category.QueryCategory;
+import com.example.Product.QueryNova.QueryAddProduct;
+import com.example.Product.QueryNova.QueryProduct;
 import com.example.QueryWaiter.QueryWaiter;
 
 public class Main {
@@ -40,11 +40,10 @@ public class Main {
 				methodoCategory.methodoCategory(connection);
 				QueryPadrao queryPadrao = new QueryPadrao();
 				queryPadrao.queryPadrao(connection, tableName, sheetAcess);
-
 				QueryAddPadraoProduct queryAddPadraoProduct = new QueryAddPadraoProduct();
 				queryAddPadraoProduct.queryAddPadraoProduct(connection, tableName);
+				System.out.println("Funcinou corretamente");
 
-				System.out.println("Concluido");
 			} else {
 				System.out.println("Query Especializada");
 				QueryProduct queryProduct = new QueryProduct();
@@ -66,7 +65,7 @@ public class Main {
 			queryAddClient.queryAddClient(connection, tableName, sheetAcess);
 			connection.close();
 			int linhasInseridas = queryClient.getLinhasInseridas();
-//			System.out.println("Affected = " + linhasInseridas);
+			System.out.println("Affected = " + linhasInseridas);
 		}
 		QueryWaiter queryWaiter = new QueryWaiter();
 		queryWaiter.queryWaiter(connection);

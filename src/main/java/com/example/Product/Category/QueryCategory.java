@@ -18,7 +18,7 @@ import org.apache.poi.ss.usermodel.WorkbookFactory;
 
 public class QueryCategory {
 	private int panel_position;
-
+	private int id;
 	public void queryCategory(Connection connection, String sheetAcess)
 			throws SQLException, EncryptedDocumentException, IOException {
 		String filePath = sheetAcess;
@@ -65,7 +65,7 @@ public class QueryCategory {
 				categoryStatement.execute();
 			}
 		}
-		int id = panel_position;
+		id = panel_position;
 		String table = "category";
 		String insert = "INSERT INTO ";
 		String values = " (id,name,description,type,sub_type,panel_position,panel,web,active,apply_taxes,parameters,panel_order_elements,panel_name,father_id,is_father_category,kitchen_notes) ";
@@ -83,5 +83,8 @@ public class QueryCategory {
 		categoryPreparedStatement.execute();
 		categoryPreparedStatement.executeBatch();
 		System.out.println("OK");
+	}
+	public int getId() {
+		return id;
 	}
 }

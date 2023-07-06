@@ -44,7 +44,6 @@ import java_cup.internal_error;
 
 public class QueryPadrao {
 	private int linhasInseridas;
-	private int panel_position;
 	public void queryPadrao(Connection connection, String tableName, String sheetAcess) {
 		try {
 			MethodoProduct methodo = new MethodoProduct();
@@ -84,9 +83,13 @@ public class QueryPadrao {
 				Cell cofinsCell = row.getCell(16);
 				Cell currentStockCell = row.getCell(17);
 
+				if (nameCell.getCellType() == CellType.BLANK && codeCell.getCellType() == CellType.BLANK) {
+					continue;
+				}
 				String barcodeValue = dataFormatter.formatCellValue(barcodeCell);
 				String nameValue = dataFormatter.formatCellValue(nameCell);
 				String descriptionValue = dataFormatter.formatCellValue(descriptionCell);
+
 				String typeValueString = dataFormatter.formatCellValue(typeCell); // Origem
 				int typeValue;
 				if (typeValueString == "") {
@@ -94,6 +97,7 @@ public class QueryPadrao {
 				} else {
 					typeValue = 2;
 				}
+
 				String type2ValueString = dataFormatter.formatCellValue(type2Cell); // Tipo
 				int type2Value = 0;
 				if (type2ValueString == "") {
@@ -105,6 +109,7 @@ public class QueryPadrao {
 				if (type2ValueString == "2") {
 					type2Value = 2;
 				}
+
 				String costValueString = dataFormatter.formatCellValue(costCell);
 				int costValue = 0;
 				if (costValueString.equals("")) {
@@ -112,6 +117,7 @@ public class QueryPadrao {
 				} else {
 					costValue = Integer.parseInt(costValueString) * 100;
 				}
+
 				String priceValueString = dataFormatter.formatCellValue(priceCell);
 				int priceValue = 0;
 				if (priceValueString.equals("")) {
@@ -119,6 +125,7 @@ public class QueryPadrao {
 				} else {
 					priceValue = Integer.parseInt(priceValueString);
 				}
+
 				String ncmValue = dataFormatter.formatCellValue(ncmCell);
 				String cfopValue = dataFormatter.formatCellValue(cfopCell);
 				String cestValue = dataFormatter.formatCellValue(cestCell);
@@ -128,26 +135,33 @@ public class QueryPadrao {
 				if (icmsValueString.equals("")) {
 					icmsValue = 10 * 1000;
 				}
+
 				String piscodeValue = dataFormatter.formatCellValue(piscodCell);
 				String pisValueString = dataFormatter.formatCellValue(pisCell);
-				int pisValue = 0;
+				int pisValue;
 				if (pisValueString.equals("")) {
-					pisValue = 10;
+					pisValue = 0;
+				} else {
+					pisValue = Integer.parseInt(pisValueString);
 				}
+
 				String cofinscodValue = dataFormatter.formatCellValue(cofinscodCell);
 				String cofinsValueString = dataFormatter.formatCellValue(cofinsCell);
-				int cofinsValue = 0;
+				int cofinsValue;
 				if (cofinsValueString.equals("")) {
-					cofinsValue = 5;
+					cofinsValue = 0;
+				} else {
+					cofinsValue = Integer.parseInt(cofinsValueString);
 				}
+
 				String currentStockValueString = dataFormatter.formatCellValue(currentStockCell);
-				int currentStockValue = 0;
+				int currentStockValue;
 				if (currentStockValueString.equals("")) {
-					currentStockValue = 50;
+					currentStockValue = 0;
+				} else {
+					currentStockValue = Integer.parseInt(currentStockValueString);
 				}
-				if (nameCell.getCellType() == CellType.BLANK && codeCell.getCellType() == CellType.BLANK) {
-					continue;
-				}
+
 				if (codeCell != null && codeCell.getCellType() != CellType.BLANK) {
 					codeValue = dataFormatter.formatCellValue(codeCell);
 					if (!checkIfCodeExists(connection, codeValue)) {
@@ -180,13 +194,12 @@ public class QueryPadrao {
 					preparedStatement.setInt(17, cofinsValue);
 					preparedStatement.setInt(18, currentStockValue);
 					preparedStatement.setInt(19, internalcode + internal_codeAdd); // Internal_Code
-					preparedStatement.setInt(20, internalcode + internal_codeAdd);
 					for (int j = 0; j < defaultValues.size(); j++) {
 						String value = defaultValues.get(j);
 						if (value.isEmpty()) {
-							preparedStatement.setInt(j + 21, 0);
+							preparedStatement.setInt(j + 20, 0);
 						} else {
-							preparedStatement.setString(j + 21, value);
+							preparedStatement.setString(j + 20, value);
 						}
 					}
 					preparedStatement.execute();
@@ -196,6 +209,36 @@ public class QueryPadrao {
 					linhasInseridas = getLinhasInseridas() + 1;
 				}
 			}
+			PreparedStatement vincularCodigo = connection.prepareStatement(insertQuery);
+			int id = queryCategory.getId();
+			vincularCodigo.setInt(1, id); // category_id
+			vincularCodigo.setString(2, "");
+			vincularCodigo.setString(3, "Vincular codigo PDV");
+			vincularCodigo.setString(4, "");
+			vincularCodigo.setInt(5, 1);
+			vincularCodigo.setInt(6, 0);
+			vincularCodigo.setInt(7, 0);
+			vincularCodigo.setInt(8, 0);
+			vincularCodigo.setString(9, "");
+			vincularCodigo.setString(10, "");
+			vincularCodigo.setString(11, "");
+			vincularCodigo.setString(12, "");
+			vincularCodigo.setInt(13, 0);
+			vincularCodigo.setString(14, "");
+			vincularCodigo.setInt(15, 0);
+			vincularCodigo.setString(16, "");
+			vincularCodigo.setInt(17, 0);
+			vincularCodigo.setInt(18, 0);
+			vincularCodigo.setInt(19, 999);
+			for (int j = 0; j < defaultValues.size(); j++) {
+				String value = defaultValues.get(j);
+				if (value.isEmpty()) {
+					vincularCodigo.setInt(j + 20, 0);
+				} else {
+					vincularCodigo.setString(j + 20, value);
+				}
+			}
+			vincularCodigo.execute();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -214,11 +257,39 @@ public class QueryPadrao {
 		}
 	}
 
-	public int getLinhasInseridas() {
-		return linhasInseridas;
+	public int inserIdProduct(Connection connection) {
+		String product = "product";
+		String query = "SELECT COUNT(*) AS record_count FROM ";
+		int totalProduct = -1;
+		try {
+			PreparedStatement queryInserId = connection.prepareStatement(query + product);
+			ResultSet resultSet = queryInserId.executeQuery();
+			if (resultSet.next()) {
+				totalProduct = resultSet.getInt("record_count");
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return totalProduct;
 	}
 
-	public int getPanel_position() {
-		return panel_position;
+	public int inserIdCategory(Connection connection) {
+		String category = "category";
+		String query = "SELECT COUNT(*) AS record_count FROM ";
+		int totalCategory = -1;
+		try {
+			PreparedStatement queryInserId = connection.prepareStatement(query + category);
+			ResultSet resultSet = queryInserId.executeQuery();
+			if (resultSet.next()) {
+				totalCategory = resultSet.getInt("record_count");
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return totalCategory;
+	}
+
+	public int getLinhasInseridas() {
+		return linhasInseridas;
 	}
 }
