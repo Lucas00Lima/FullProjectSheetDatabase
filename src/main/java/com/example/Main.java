@@ -4,8 +4,6 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
 
-import javax.swing.JOptionPane;
-
 import org.apache.poi.EncryptedDocumentException;
 
 import com.example.Client.MethodoClient;
@@ -19,6 +17,7 @@ import com.example.Product.QueryAddProduct;
 import com.example.Product.QueryPadrao;
 import com.example.Product.QueryProduct;
 import com.example.Product.Category.MethodoCategory;
+import com.example.Product.Category.QueryCategory;
 import com.example.QueryWaiter.QueryWaiter;
 
 public class Main {
@@ -41,9 +40,11 @@ public class Main {
 				methodoCategory.methodoCategory(connection);
 				QueryPadrao queryPadrao = new QueryPadrao();
 				queryPadrao.queryPadrao(connection, tableName, sheetAcess);
+
 				QueryAddPadraoProduct queryAddPadraoProduct = new QueryAddPadraoProduct();
 				queryAddPadraoProduct.queryAddPadraoProduct(connection, tableName);
 
+				System.out.println("Concluido");
 			} else {
 				System.out.println("Query Especializada");
 				QueryProduct queryProduct = new QueryProduct();
@@ -65,7 +66,7 @@ public class Main {
 			queryAddClient.queryAddClient(connection, tableName, sheetAcess);
 			connection.close();
 			int linhasInseridas = queryClient.getLinhasInseridas();
-			System.out.println("Affected = " + linhasInseridas);
+//			System.out.println("Affected = " + linhasInseridas);
 		}
 		QueryWaiter queryWaiter = new QueryWaiter();
 		queryWaiter.queryWaiter(connection);

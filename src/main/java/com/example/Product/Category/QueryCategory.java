@@ -17,6 +17,8 @@ import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
 
 public class QueryCategory {
+	private int panel_position;
+
 	public void queryCategory(Connection connection, String sheetAcess)
 			throws SQLException, EncryptedDocumentException, IOException {
 		String filePath = sheetAcess;
@@ -25,7 +27,7 @@ public class QueryCategory {
 		Sheet sheet = workbook.getSheetAt(0);
 		DataFormatter dataFormatter = new DataFormatter();
 		int rowIndex;
-		int panel_position = 1;
+		panel_position = 1;
 		for (rowIndex = 1; rowIndex <= sheet.getLastRowNum(); rowIndex++) {
 			Row row = sheet.getRow(rowIndex);
 			Cell categoryId = row.getCell(0);
@@ -36,20 +38,21 @@ public class QueryCategory {
 				String categoryNameValue = dataFormatter.formatCellValue(categoryName);
 				String categorySubTypeValue = dataFormatter.formatCellValue(categorySubType);
 				if (categorySubTypeValue.equals("")) {
-					categorySubTypeValue = "1";}
+					categorySubTypeValue = "1";
+				}
 				MethodoCategory methodoCategory = new MethodoCategory();
 				List<String> defaultLists = methodoCategory.getDefaultList();
 				String insertQueryCategory = methodoCategory.methodoCategory(connection);
 				PreparedStatement categoryStatement = connection.prepareStatement(insertQueryCategory);
 				categoryStatement.setString(1, categoryIdValue);
 				categoryStatement.setString(2, categoryNameValue);
-				categoryStatement.setString(3, ""); //Descrição
+				categoryStatement.setString(3, ""); // Descrição
 				categoryStatement.setInt(4, 1);
 				categoryStatement.setString(5, categorySubTypeValue);
 				categoryStatement.setInt(6, panel_position);
 				categoryStatement.setInt(7, 1);
 				categoryStatement.setInt(8, 0);
-				categoryStatement.setInt(9, 1); //Active
+				categoryStatement.setInt(9, 1); // Active
 				categoryStatement.setInt(10, 1);
 				categoryStatement.setString(11, "");
 				categoryStatement.setInt(12, 0);
@@ -62,6 +65,15 @@ public class QueryCategory {
 				categoryStatement.execute();
 			}
 		}
+		int id = panel_position;
+		String table = "category";
+		String insert = "INSERT INTO ";
+		String values = " (id,name,description,type,sub_type,panel_position,panel,web,active,apply_taxes,parameters,panel_order_elements,panel_name,father_id,is_father_category,kitchen_notes) ";
+		String values1 = "VALUES (" + id + ",'Online','Usada para produto ifood generico',1,1," + id
+				+ ",0,0,1,1,'',0,'Online',0,0,'')";
+		PreparedStatement categoryPreparedStatement = connection.prepareStatement(insert + table + values + values1);
+		System.out.println(categoryPreparedStatement.toString());
+		categoryPreparedStatement.execute();
+		System.out.println("OK");
 	}
-
 }

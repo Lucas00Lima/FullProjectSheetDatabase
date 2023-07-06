@@ -20,7 +20,7 @@ public class QueryAddPadraoProduct {
 			addStatement.addBatch(update + tableName + " SET hall_table = 1 ");
 			addStatement.addBatch(update + tableName + " SET balcony  = 1 ");
 			addStatement.addBatch(update + tableName + " SET parameters  = '' ");
-			addStatement.addBatch(update + tableName + " SET departament_id = 1 ");
+			addStatement.addBatch(update + tableName + " SET department_id = 1 ");
 			addStatement.execute();
 			addStatement.executeBatch();
 			System.out.println("Query padrão executada");
@@ -28,5 +28,12 @@ public class QueryAddPadraoProduct {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+//	}
+//	public void queryVinculadoCodigo(Connection connection, String tableName) {
+//		try {
+//			PreparedStatement insertVincular = connection.prepareStatement("INSERT INTO product (name,internal_code,department_id,type,brand_id,category_id,)")
+//		} catch (SQLException e) {
+//			e.printStackTrace();
+//		}
 	}
 }

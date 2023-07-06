@@ -44,7 +44,7 @@ import java_cup.internal_error;
 
 public class QueryPadrao {
 	private int linhasInseridas;
-
+	private int panel_position;
 	public void queryPadrao(Connection connection, String tableName, String sheetAcess) {
 		try {
 			MethodoProduct methodo = new MethodoProduct();
@@ -216,5 +216,9 @@ public class QueryPadrao {
 
 	public int getLinhasInseridas() {
 		return linhasInseridas;
+	}
+
+	public int getPanel_position() {
+		return panel_position;
 	}
 }
