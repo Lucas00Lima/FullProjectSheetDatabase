@@ -17,7 +17,6 @@ public class SheetAcess {
 			filePath = fileChooser.getSelectedFile().getAbsolutePath();
 			JOptionPane.showMessageDialog(null, "Aquivo selecionado " + getFilePath());
 		}
-//		return filePath = "G:\\Meu Drive\\Backup\\SOMA\\Clientes\\000 - Cliente teste\\ProdutosPlanilha.xlsx";
 		return filePath;
 	}
 	public String getFilePath() {

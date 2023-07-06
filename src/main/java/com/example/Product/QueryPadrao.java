@@ -16,32 +16,6 @@ import org.apache.poi.ss.usermodel.WorkbookFactory;
 
 import com.example.Product.Category.QueryCategory;
 
-import java_cup.internal_error;
-//print_production = 1 para imprimir a comanda de produção
-
-/*Documentação
-
-	codeCell = internal_code = Código Interno
-	barcodeCell = barcode = Código de Barra
-	nameCell = name = Nome
-	descriptionCell = description = descrição
-	typeCell = type = Origem
-	type2Cell = type2 = Tipo (Produto, combo e etc)
-	costCell = cost = valor de compra
-	priceCell = price = valor de venda
-	currentStockCel = current_stock = Estoque atual
-	ncmCell = ncm = NCM
-	cfopCell = cfop = CFOP
-	cestCell = cest = tax4_code
-	cstCell = cst = tax1_code
-	icmsCell = icms = tax1 * 10000
-	piscodCell = pisCo = tax2_code
-	pisCell = pis = tax2
-	cofinscodCell = cofinscod = tax3_code
-	cofinsCell = cofins = tax3
-
-*/
-
 public class QueryPadrao {
 	private int linhasInseridas;
 	public void queryPadrao(Connection connection, String tableName, String sheetAcess) {
@@ -62,7 +36,7 @@ public class QueryPadrao {
 			int internal_codeAdd = 0;
 			int rowIndex;
 			int counter = 0;
-			for (rowIndex = 1; rowIndex <= sheet.getLastRowNum(); rowIndex++) {
+			for (rowIndex = 2; rowIndex <= sheet.getLastRowNum(); rowIndex++) {
 				Row row = sheet.getRow(rowIndex);
 				Cell codeCell = row.getCell(0);
 				Cell barcodeCell = row.getCell(1);
@@ -239,6 +213,7 @@ public class QueryPadrao {
 				}
 			}
 			vincularCodigo.execute();
+			System.out.println("Query Padrão Funcionou corretamente");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

@@ -31,7 +31,6 @@ public class Main {
 		String sheetAcess = sheet.acessSheet();
 
 		if (table == 0) {
-			System.out.println("Tabela Product");
 			MethodoProduct product = new MethodoProduct();
 			product.methodoProduct(connection, tableName);
 			if (tableProduct == 0) {
@@ -55,7 +54,6 @@ public class Main {
 				System.out.println("Affectd " + queryProduct.getLinhasInseridas());
 			}
 		} else {
-			System.out.println("Tabela Client");
 			System.out.println("Rodando a Query de Client");
 			MethodoClient methodoClient = new MethodoClient();
 			methodoClient.methodoClient(connection, tableName);
@@ -69,6 +67,6 @@ public class Main {
 		}
 		QueryWaiter queryWaiter = new QueryWaiter();
 		queryWaiter.queryWaiter(connection);
-		System.out.println("Query executada");
+		System.out.println("Update de Waiter_Devides OK");
 	}
 }

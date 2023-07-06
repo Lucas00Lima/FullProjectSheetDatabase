@@ -82,7 +82,7 @@ public class QueryCategory {
 
 		categoryPreparedStatement.execute();
 		categoryPreparedStatement.executeBatch();
-		System.out.println("OK");
+		System.out.println("Query Category executada corretamente");
 	}
 	public int getId() {
 		return id;
