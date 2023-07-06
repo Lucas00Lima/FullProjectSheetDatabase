@@ -69,11 +69,19 @@ public class QueryCategory {
 		String table = "category";
 		String insert = "INSERT INTO ";
 		String values = " (id,name,description,type,sub_type,panel_position,panel,web,active,apply_taxes,parameters,panel_order_elements,panel_name,father_id,is_father_category,kitchen_notes) ";
-		String values1 = "VALUES (" + id + ",'Online','Usada para produto ifood generico',1,1," + id
+		String online = "VALUES (" + id + ",'Online','Usada para produto ifood generico',1,1," + id
 				+ ",0,0,1,1,'',0,'Online',0,0,'')";
-		PreparedStatement categoryPreparedStatement = connection.prepareStatement(insert + table + values + values1);
-		System.out.println(categoryPreparedStatement.toString());
+		int idMateria = id + 1;
+		String materia_prima = "VALUES (" + idMateria + ",'MATÉRIA-PRIMA','',3,0," + idMateria + ",1,0,1,1,'',0,'MATÉRIA-PRIMA',0,0,'')";
+		int idPreparo = idMateria + 1;
+		String preparo = "VALUES (" + idPreparo + ",'PREPARO','',3,0," + idPreparo + ",1,0,1,1,'',0,'PREPARO',0,0,'')";
+
+		PreparedStatement categoryPreparedStatement = connection.prepareStatement(insert + table + values + online);
+		categoryPreparedStatement.addBatch(insert + table + values + materia_prima);
+		categoryPreparedStatement.addBatch(insert + table + values + preparo);
+
 		categoryPreparedStatement.execute();
+		categoryPreparedStatement.executeBatch();
 		System.out.println("OK");
 	}
 }
